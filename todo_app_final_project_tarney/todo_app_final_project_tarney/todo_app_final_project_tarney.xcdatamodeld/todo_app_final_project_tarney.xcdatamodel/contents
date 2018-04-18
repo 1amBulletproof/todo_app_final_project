@@ -14,7 +14,6 @@
         <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tag" inverseName="todos" inverseEntity="Tag" syncable="YES"/>
     </entity>
     <entity name="View" representedClassName="View" syncable="YES" codeGenerationType="class">
-        <attribute name="isDefault" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="viewID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tag" syncable="YES"/>
@@ -23,6 +22,6 @@
     <elements>
         <element name="Tag" positionX="-209" positionY="182" width="128" height="88"/>
         <element name="Todo" positionX="-225" positionY="-9" width="128" height="135"/>
-        <element name="View" positionX="-227" positionY="-135" width="128" height="105"/>
+        <element name="View" positionX="-227" positionY="-135" width="128" height="90"/>
     </elements>
 </model>
