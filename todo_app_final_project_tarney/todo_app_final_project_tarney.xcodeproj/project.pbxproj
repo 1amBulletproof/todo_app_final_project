@@ -8,22 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		A15A17CC207F0110007883BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15A17CB207F0110007883BA /* AppDelegate.swift */; };
-		A15A17CE207F0110007883BA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15A17CD207F0110007883BA /* ViewController.swift */; };
 		A15A17D1207F0110007883BA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A15A17CF207F0110007883BA /* Main.storyboard */; };
 		A15A17D4207F0110007883BA /* todo_app_final_project_tarney.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A15A17D2207F0110007883BA /* todo_app_final_project_tarney.xcdatamodeld */; };
 		A15A17D6207F0110007883BA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A15A17D5207F0110007883BA /* Assets.xcassets */; };
 		A15A17D9207F0110007883BA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A15A17D7207F0110007883BA /* LaunchScreen.storyboard */; };
+		A199E4982083E52B0079961E /* TestDBViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A199E4972083E52B0079961E /* TestDBViewController.swift */; };
+		A199E49A2083E61D0079961E /* ViewUITableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A199E4992083E61D0079961E /* ViewUITableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		A15A17C8207F0110007883BA /* todo_app_final_project_tarney.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = todo_app_final_project_tarney.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A15A17CB207F0110007883BA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A15A17CD207F0110007883BA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A15A17D0207F0110007883BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A15A17D3207F0110007883BA /* todo_app_final_project_tarney.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = todo_app_final_project_tarney.xcdatamodel; sourceTree = "<group>"; };
 		A15A17D5207F0110007883BA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A15A17D8207F0110007883BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A15A17DA207F0110007883BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A199E4972083E52B0079961E /* TestDBViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDBViewController.swift; sourceTree = "<group>"; };
+		A199E4992083E61D0079961E /* ViewUITableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewUITableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,12 +59,13 @@
 			isa = PBXGroup;
 			children = (
 				A15A17CB207F0110007883BA /* AppDelegate.swift */,
-				A15A17CD207F0110007883BA /* ViewController.swift */,
+				A199E4972083E52B0079961E /* TestDBViewController.swift */,
+				A199E4992083E61D0079961E /* ViewUITableViewController.swift */,
 				A15A17CF207F0110007883BA /* Main.storyboard */,
+				A15A17D2207F0110007883BA /* todo_app_final_project_tarney.xcdatamodeld */,
 				A15A17D5207F0110007883BA /* Assets.xcassets */,
 				A15A17D7207F0110007883BA /* LaunchScreen.storyboard */,
 				A15A17DA207F0110007883BA /* Info.plist */,
-				A15A17D2207F0110007883BA /* todo_app_final_project_tarney.xcdatamodeld */,
 			);
 			path = todo_app_final_project_tarney;
 			sourceTree = "<group>";
@@ -139,9 +142,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A15A17CE207F0110007883BA /* ViewController.swift in Sources */,
+				A199E49A2083E61D0079961E /* ViewUITableViewController.swift in Sources */,
 				A15A17CC207F0110007883BA /* AppDelegate.swift in Sources */,
 				A15A17D4207F0110007883BA /* todo_app_final_project_tarney.xcdatamodeld in Sources */,
+				A199E4982083E52B0079961E /* TestDBViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
