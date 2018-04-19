@@ -8,10 +8,19 @@
 
 import UIKit
 
-class ViewsAndTagsViewController: UITableViewController {
+class ViewsAndTagsViewController: UIViewController {
 
+    let views = ["All", "Project Marzipan", "Today"]
+    let tags = ["marzipan", "active"]
+    
+    @IBOutlet weak var viewsTable: UITableView!
+    @IBOutlet weak var tagsTable: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        viewsTable.delegate = self
+        tagsTable.delegate = self
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -24,72 +33,133 @@ class ViewsAndTagsViewController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+    // MARK: - Navigation/segues
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        print("segue is \(segue.identifier!)")
+//        let indexPath = tableView.indexPathForSelectedRow!
+//        let section = indexPath.section
+//        let row = indexPath.row
+//
+//        let vc = segue.destination as! SuperHeroDetailViewController
+//        vc.imageName = images[section][row]
+//        vc.heroName = superheroes[section][row]
+//        vc.companyName = companies[section]
+//        vc.powers = descriptions[section][row]
+    }
+    
+    
+    @IBAction func unwindToTable(segue:UIStoryboardSegue)
+    {
+        print("transition unwind")
+    }
+}
 
     // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+extension ViewsAndTagsViewController: UITableViewDataSource
+{
+    //MARK: - UITableViewDataSource
+    func numberOfSections(in tableView: UITableView) -> Int {
+                print("got here")
+        //TODO: return proper number of sections DEPENDING on the tableView passed-in
+        if tableView == self.viewsTable {
+            return 1
+        } else { //tags table
+            return 1
+        }
     }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+    
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        //TODO: return proper number of sections DEPENDING on the tableView passed-in
+        if tableView == self.viewsTable {
+            return "Views"
+        } else { //tags table
+            return "Tags"
+        }
     }
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
+    
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        //TODO: properly populate data
+        if tableView == self.viewsTable {
+            return self.views.count
+        } else { // tags table
+            return self.tags.count
+        }
     }
-    */
+    
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        //TODO: properly populate data
+        print("got here")
+        if tableView == self.viewsTable {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "ViewsCell", for: indexPath)
+                    cell.textLabel?.text = self.views[indexPath.row]
+                    return cell
+        } else { // tags table
+            let cell = tableView.dequeueReusableCell(withIdentifier: "TagsCell", for: indexPath)
+            cell.textLabel?.text = self.tags[indexPath.row]
+            return cell
+        }
+    }
+}
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
+
+extension ViewsAndTagsViewController: UITableViewDelegate
+{
+    //MARK: - UITableViewDelegate
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
+    }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
+        print("time to segue to this view or tag detail")
+    }
+    
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete
+        {
+            //TODO: remove the deleted object from your data source.
+            tableView.reloadData()
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        }
     }
-    */
-
+    
+    func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+        print("touching accessory button")
+//        tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+////        performSegue(withIdentifier: "superHeroAccessorySegue", sender: self)
+//        tableView.deselectRow(at: indexPath, animated: false)
+    }
+    
+    
     /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
+     // Override to support rearranging the table view.
+     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+     
+     }
+     */
+    
+    
     /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // Override to support conditional rearranging of the table view.
+     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+     // Return false if you do not want the item to be re-orderable.
+     return true
+     }
+     */
 }
+
+
