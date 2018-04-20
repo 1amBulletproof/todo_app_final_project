@@ -18,9 +18,12 @@ class ViewsAndTagsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("ViewsAndTags Controller INIT")
         
-        viewsTable.delegate = self
-        tagsTable.delegate = self
+        self.viewsTable.delegate = self
+        self.viewsTable.dataSource = self
+        self.tagsTable.delegate = self
+        self.tagsTable.dataSource = self
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -63,7 +66,7 @@ extension ViewsAndTagsViewController: UITableViewDataSource
 {
     //MARK: - UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
-                print("got here")
+        print("numberOfSections")
         //TODO: return proper number of sections DEPENDING on the tableView passed-in
         if tableView == self.viewsTable {
             return 1
@@ -75,6 +78,7 @@ extension ViewsAndTagsViewController: UITableViewDataSource
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         //TODO: return proper number of sections DEPENDING on the tableView passed-in
+        print("titleForHeaderInSection")
         if tableView == self.viewsTable {
             return "Views"
         } else { //tags table
@@ -85,6 +89,7 @@ extension ViewsAndTagsViewController: UITableViewDataSource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //TODO: properly populate data
+        print("numberOfRowsInSection")
         if tableView == self.viewsTable {
             return self.views.count
         } else { // tags table
@@ -113,7 +118,8 @@ extension ViewsAndTagsViewController: UITableViewDelegate
 {
     //MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        print("heightForRowAt")
+        return 50
     }
     
     
@@ -128,6 +134,7 @@ extension ViewsAndTagsViewController: UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        print("stuff")
         if editingStyle == .delete
         {
             //TODO: remove the deleted object from your data source.

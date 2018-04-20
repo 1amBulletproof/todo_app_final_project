@@ -89,7 +89,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Main App -&gt;"/>
                                 <connections>
-                                    <segue destination="tMu-Sg-G9Y" kind="show" identifier="mainApp" id="dio-H1-UIh"/>
+                                    <segue destination="tMu-Sg-G9Y" kind="show" identifier="showMainApp" id="dio-H1-UIh"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -199,6 +199,9 @@
                                 <rect key="frame" x="0.0" y="615" width="135" height="52"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Add View"/>
+                                <connections>
+                                    <segue destination="WcO-aP-qEQ" kind="show" identifier="showViewDetails" id="mBM-9m-F0l"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="73T-yt-x7h">
                                 <rect key="frame" x="120" y="615" width="135" height="52"/>
@@ -228,7 +231,7 @@
         <!--View Details-->
         <scene sceneID="eY5-1e-KR5">
             <objects>
-                <viewController title="View Details" id="WcO-aP-qEQ" sceneMemberID="viewController">
+                <viewController title="View Details" id="WcO-aP-qEQ" customClass="ViewDetailViewController" customModule="todo_app_final_project_tarney" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="HoO-CL-XP5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -244,6 +247,9 @@
                                 <rect key="frame" x="292" y="583" width="83" height="49"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Save"/>
+                                <connections>
+                                    <action selector="saveViewDetails:" destination="WcO-aP-qEQ" eventType="touchUpInside" id="M3G-tH-eC1"/>
+                                </connections>
                             </button>
                             <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eXC-PZ-hzq">
                                 <rect key="frame" x="1" y="204" width="375" height="86"/>
@@ -278,14 +284,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="View Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pfH-GH-Wor">
-                                <rect key="frame" x="153" y="63" width="87" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Enter a new tag here" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Ujy-uf-8V6">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" keyboardDismissMode="onDrag" text="Enter a new view here" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Ujy-uf-8V6">
                                 <rect key="frame" x="85" y="99" width="215" height="65"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -296,10 +295,16 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="raX-FR-4Wv"/>
                     </view>
+                    <connections>
+                        <outlet property="tagComboBox1" destination="eXC-PZ-hzq" id="d4C-9D-lbo"/>
+                        <outlet property="tagComboBox2" destination="ILk-ss-rKJ" id="GTY-HB-Mmm"/>
+                        <outlet property="tagComboBox3" destination="U31-U5-1GY" id="A3G-qQ-oGc"/>
+                        <outlet property="viewName" destination="Ujy-uf-8V6" id="feo-JI-S3E"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cbj-KI-nMh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-458.39999999999998" y="-534.78260869565224"/>
+            <point key="canvasLocation" x="921" y="-840"/>
         </scene>
         <!--View Todo List-->
         <scene sceneID="FO6-GM-Uya">
@@ -355,16 +360,6 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Add Todo"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QIZ-gS-b62">
-                                <rect key="frame" x="0.0" y="615" width="135" height="52"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Add View"/>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PYw-T4-WXB">
-                                <rect key="frame" x="120" y="615" width="135" height="52"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Add Context"/>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="jiY-4j-991"/>
@@ -372,7 +367,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tQ5-5G-Ewz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="664.79999999999995" y="-111.0944527736132"/>
+            <point key="canvasLocation" x="921" y="-104"/>
         </scene>
         <!--Todo Details-->
         <scene sceneID="NYl-Ax-i3o">
@@ -479,7 +474,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lMo-lx-NWD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="664.79999999999995" y="585.1574212893554"/>
+            <point key="canvasLocation" x="921" y="686"/>
         </scene>
         <!--Tag Details-->
         <scene sceneID="omR-tW-A5m">
@@ -538,7 +533,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ydU-mU-lKQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-458.39999999999998" y="896.40179910044981"/>
+            <point key="canvasLocation" x="921" y="1504"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="DJl-ps-Z7U">
