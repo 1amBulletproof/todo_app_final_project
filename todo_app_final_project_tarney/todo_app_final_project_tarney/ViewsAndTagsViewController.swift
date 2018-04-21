@@ -8,6 +8,18 @@
 
 import UIKit
 
+class ViewRow : UITableViewCell {
+    @IBOutlet weak var rowViewName: UILabel!
+    @IBOutlet weak var rowViewDetailsButton: UIButton!
+    @IBOutlet weak var rowViewSelectButton: UIButton!
+}
+
+class TagRow : UITableViewCell {
+    @IBOutlet weak var rowTagName: UILabel!
+    @IBOutlet weak var rowTagDetailsButton: UIButton!
+    @IBOutlet weak var rowTagSelectButton: UIButton!
+}
+
 class ViewsAndTagsViewController: UIViewController {
 
     let views = ["All", "Project Marzipan", "Today"]
@@ -102,12 +114,12 @@ extension ViewsAndTagsViewController: UITableViewDataSource
         //TODO: properly populate data
         print("got here")
         if tableView == self.viewsTable {
-                    let cell = tableView.dequeueReusableCell(withIdentifier: "ViewsCell", for: indexPath)
-                    cell.textLabel?.text = self.views[indexPath.row]
-                    return cell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ViewRow", for: indexPath) as! ViewRow
+            cell.rowViewName.text = self.views[indexPath.row]
+            return cell
         } else { // tags table
-            let cell = tableView.dequeueReusableCell(withIdentifier: "TagsCell", for: indexPath)
-            cell.textLabel?.text = self.tags[indexPath.row]
+            let cell = tableView.dequeueReusableCell(withIdentifier: "TagRow", for: indexPath) as! TagRow
+            cell.rowTagName.text = self.tags[indexPath.row]
             return cell
         }
     }
