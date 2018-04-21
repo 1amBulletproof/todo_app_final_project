@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TagDetailViewController: UIViewController {
+class ListDetailViewController: UIViewController {
 
     @IBOutlet weak var tagName: UITextView!
     

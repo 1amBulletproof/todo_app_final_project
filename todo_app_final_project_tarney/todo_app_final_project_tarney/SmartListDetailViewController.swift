@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewDetailViewController: UIViewController {
+class SmartListDetailViewController: UIViewController {
     
     let tags = ["marzipan", "active", "gym", "important"]
 
@@ -49,7 +49,7 @@ class ViewDetailViewController: UIViewController {
 
 }
 
-extension ViewDetailViewController: UIPickerViewDelegate {
+extension SmartListDetailViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return self.tags[row]
     }
@@ -59,7 +59,7 @@ extension ViewDetailViewController: UIPickerViewDelegate {
     }
 }
 
-extension ViewDetailViewController: UIPickerViewDataSource {
+extension SmartListDetailViewController: UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }

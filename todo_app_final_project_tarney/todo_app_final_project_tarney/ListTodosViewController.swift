@@ -1,49 +1,38 @@
 //
-//  ViewUITableViewController.swift
+//  ListsViewController
 //  todo_app_final_project_tarney
 //
 //  Created by Brandon Tarney on 4/15/18.
 //  Copyright © 2018 Johns Hopkins University. All rights reserved.
 //
-
 import UIKit
 
-class ViewRow : UITableViewCell {
-    @IBOutlet weak var rowViewName: UILabel!
-    @IBOutlet weak var rowViewDetailsButton: UIButton!
-    @IBOutlet weak var rowViewSelectButton: UIButton!
+class TodoRow : UITableViewCell {
+    @IBOutlet weak var rowTodoName: UILabel!
+    @IBOutlet weak var rowTodoDetailsButton: UIButton!
+    @IBOutlet weak var rowTodoCompleteButton: UIButton!
 }
 
-class TagRow : UITableViewCell {
-    @IBOutlet weak var rowTagName: UILabel!
-    @IBOutlet weak var rowTagDetailsButton: UIButton!
-    @IBOutlet weak var rowTagSelectButton: UIButton!
-}
 
-class ViewsAndTagsViewController: UIViewController {
-
-    let views = ["All", "Project Marzipan", "Today"]
-    let tags = ["marzipan", "active"]
+class ListTodosViewController: UIViewController {
     
-    @IBOutlet weak var viewsTable: UITableView!
-    @IBOutlet weak var tagsTable: UITableView!
+    let todos = ["todo1", "todo2", "todo3"]
     
+    @IBOutlet weak var todosTable: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
         print("ViewsAndTags Controller INIT")
         
-        self.viewsTable.delegate = self
-        self.viewsTable.dataSource = self
-        self.tagsTable.delegate = self
-        self.tagsTable.dataSource = self
+        self.todosTable.delegate = self
+        self.todosTable.dataSource = self
 
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -55,15 +44,15 @@ class ViewsAndTagsViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
         print("segue is \(segue.identifier!)")
-//        let indexPath = tableView.indexPathForSelectedRow!
-//        let section = indexPath.section
-//        let row = indexPath.row
-//
-//        let vc = segue.destination as! SuperHeroDetailViewController
-//        vc.imageName = images[section][row]
-//        vc.heroName = superheroes[section][row]
-//        vc.companyName = companies[section]
-//        vc.powers = descriptions[section][row]
+        //        let indexPath = tableView.indexPathForSelectedRow!
+        //        let section = indexPath.section
+        //        let row = indexPath.row
+        //
+        //        let vc = segue.destination as! SuperHeroDetailViewController
+        //        vc.imageName = images[section][row]
+        //        vc.heroName = superheroes[section][row]
+        //        vc.companyName = companies[section]
+        //        vc.powers = descriptions[section][row]
     }
     
     
@@ -73,60 +62,47 @@ class ViewsAndTagsViewController: UIViewController {
     }
 }
 
-    // MARK: - Table view data source
-extension ViewsAndTagsViewController: UITableViewDataSource
+// MARK: - Table view data source
+extension ListTodosViewController: UITableViewDataSource
 {
     //MARK: - UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
         print("numberOfSections")
         //TODO: return proper number of sections DEPENDING on the tableView passed-in
-        if tableView == self.viewsTable {
-            return 1
-        } else { //tags table
-            return 1
-        }
+        return 1
     }
     
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         //TODO: return proper number of sections DEPENDING on the tableView passed-in
         print("titleForHeaderInSection")
-        if tableView == self.viewsTable {
-            return "Views"
-        } else { //tags table
-            return "Tags"
-        }
+        return ("Todos")
     }
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //TODO: properly populate data
         print("numberOfRowsInSection")
-        if tableView == self.viewsTable {
-            return self.views.count
-        } else { // tags table
-            return self.tags.count
-        }
+        return self.todos.count
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //TODO: properly populate data
         print("got here")
-        if tableView == self.viewsTable {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ViewRow", for: indexPath) as! ViewRow
-            cell.rowViewName.text = self.views[indexPath.row]
+        if tableView == self.todosTable {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "TodoRow", for: indexPath) as! TodoRow
+            cell.rowTodoName.text = self.todos[indexPath.row]
             return cell
         } else { // tags table
-            let cell = tableView.dequeueReusableCell(withIdentifier: "TagRow", for: indexPath) as! TagRow
-            cell.rowTagName.text = self.tags[indexPath.row]
-            return cell
+            print("ERROR - not a todo row?!")
+            return UITableViewCell()
         }
     }
 }
 
 
-extension ViewsAndTagsViewController: UITableViewDelegate
+extension ListTodosViewController: UITableViewDelegate
 {
     //MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -158,9 +134,9 @@ extension ViewsAndTagsViewController: UITableViewDelegate
     
     func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
         print("touching accessory button")
-//        tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-////        performSegue(withIdentifier: "superHeroAccessorySegue", sender: self)
-//        tableView.deselectRow(at: indexPath, animated: false)
+        //        tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+        ////        performSegue(withIdentifier: "superHeroAccessorySegue", sender: self)
+        //        tableView.deselectRow(at: indexPath, animated: false)
     }
     
     
@@ -180,5 +156,4 @@ extension ViewsAndTagsViewController: UITableViewDelegate
      }
      */
 }
-
 
