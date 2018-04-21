@@ -9,13 +9,13 @@
 import UIKit
 
 class SmartListRow : UITableViewCell {
-    @IBOutlet weak var rowSmartListName: UILabel!
+    @IBOutlet weak var rowSmartListNameLabel: UILabel!
     @IBOutlet weak var rowSmartListDetailButton: UIButton!
     @IBOutlet weak var rowSmartListSelectButton: UIButton!
 }
 
 class ListRow : UITableViewCell {
-    @IBOutlet weak var rowListName: UILabel!
+    @IBOutlet weak var rowListNameLabel: UILabel!
     @IBOutlet weak var rowListDetailsButton: UIButton!
     @IBOutlet weak var rowListSelectButton: UIButton!
 }
@@ -48,7 +48,6 @@ class AllListsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
     // MARK: - Navigation/segues
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
@@ -64,7 +63,6 @@ class AllListsViewController: UIViewController {
         //        vc.companyName = companies[section]
         //        vc.powers = descriptions[section][row]
     }
-    
     
     @IBAction func unwindToTable(segue:UIStoryboardSegue)
     {
@@ -86,7 +84,6 @@ extension AllListsViewController: UITableViewDataSource
         }
     }
     
-    
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         //TODO: return proper number of sections DEPENDING on the tableView passed-in
         print("titleForHeaderInSection")
@@ -96,7 +93,6 @@ extension AllListsViewController: UITableViewDataSource
             return "Tags"
         }
     }
-    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //TODO: properly populate data
@@ -108,17 +104,16 @@ extension AllListsViewController: UITableViewDataSource
         }
     }
     
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //TODO: properly populate data
         print("got here")
         if tableView == self.smartListsTable {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SmartListRow", for: indexPath) as! SmartListRow
-            cell.rowSmartListName.text = self.smartLists[indexPath.row]
+            cell.rowSmartListNameLabel.text = self.smartLists[indexPath.row]
             return cell
         } else { // lists table
             let cell = tableView.dequeueReusableCell(withIdentifier: "ListRow", for: indexPath) as! ListRow
-            cell.rowListName.text = self.lists[indexPath.row]
+            cell.rowListNameLabel.text = self.lists[indexPath.row]
             return cell
         }
     }
@@ -133,12 +128,10 @@ extension AllListsViewController: UITableViewDelegate
         return 50
     }
     
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
         print("time to segue to this view or tag detail")
     }
-    
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true

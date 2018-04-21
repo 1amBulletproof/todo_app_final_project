@@ -9,21 +9,23 @@
 import UIKit
 
 class SmartListDetailViewController: UIViewController {
-    
-    let tags = ["marzipan", "active", "gym", "important"]
 
-    @IBOutlet weak var viewName: UITextView!
-    @IBOutlet weak var tagComboBox1: UIPickerView!
-    @IBOutlet weak var tagComboBox2: UIPickerView!
-    @IBOutlet weak var tagComboBox3: UIPickerView!
+    @IBOutlet weak var listNameText: UITextView!
+    @IBOutlet weak var listComboBox1: UIPickerView!
+    @IBOutlet weak var listComboBox2: UIPickerView!
+    @IBOutlet weak var listComboBox3: UIPickerView!
+    
+    let list = ["marzipan", "active", "gym", "important"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tagComboBox1.delegate = self
-        self.tagComboBox1.dataSource = self
-        self.tagComboBox2.delegate = self
-        self.tagComboBox2.dataSource = self
-        self.tagComboBox3.delegate = self
+        
+        self.listComboBox1.delegate = self
+        self.listComboBox1.dataSource = self
+        self.listComboBox2.delegate = self
+        self.listComboBox2.dataSource = self
+        self.listComboBox3.delegate = self
+        self.listComboBox3.dataSource = self
         // Do any additional setup after loading the view.
     }
 
@@ -32,9 +34,9 @@ class SmartListDetailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func saveViewDetails(_ sender: Any) {
-        print("save view details")
-        print("View name is \(self.viewName.text)")
+    @IBAction func saveSmartListDetails(_ sender: Any) {
+        print("save Smart List details")
+        print("Smart List name is \(self.listNameText.text)")
     }
     
     /*
@@ -51,11 +53,11 @@ class SmartListDetailViewController: UIViewController {
 
 extension SmartListDetailViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return self.tags[row]
+        return self.list[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        print("selected \(self.tags[row])")
+        print("selected \(self.list[row])")
     }
 }
 
@@ -65,7 +67,7 @@ extension SmartListDetailViewController: UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return self.tags.count
+        return self.list.count
     }
     
 }

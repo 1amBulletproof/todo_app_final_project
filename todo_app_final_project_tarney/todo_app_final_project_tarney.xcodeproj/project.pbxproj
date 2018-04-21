@@ -13,6 +13,7 @@
 		A15A17D6207F0110007883BA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A15A17D5207F0110007883BA /* Assets.xcassets */; };
 		A15A17D9207F0110007883BA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A15A17D7207F0110007883BA /* LaunchScreen.storyboard */; };
 		A18778FC208BC28000E0B3F6 /* AllListsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18778FB208BC28000E0B3F6 /* AllListsViewController.swift */; };
+		A18778FE208BDFF600E0B3F6 /* TodoNotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18778FD208BDFF600E0B3F6 /* TodoNotesViewController.swift */; };
 		A199E4982083E52B0079961E /* TestDBViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A199E4972083E52B0079961E /* TestDBViewController.swift */; };
 		A1EE0E662087FEBD0052B628 /* SmartListDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EE0E652087FEBD0052B628 /* SmartListDetailViewController.swift */; };
 		A1EE0E682087FEE00052B628 /* ListDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EE0E672087FEE00052B628 /* ListDetailViewController.swift */; };
@@ -29,6 +30,7 @@
 		A15A17D8207F0110007883BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A15A17DA207F0110007883BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A18778FB208BC28000E0B3F6 /* AllListsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllListsViewController.swift; sourceTree = "<group>"; };
+		A18778FD208BDFF600E0B3F6 /* TodoNotesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoNotesViewController.swift; sourceTree = "<group>"; };
 		A199E4972083E52B0079961E /* TestDBViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDBViewController.swift; sourceTree = "<group>"; };
 		A1EE0E652087FEBD0052B628 /* SmartListDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartListDetailViewController.swift; sourceTree = "<group>"; };
 		A1EE0E672087FEE00052B628 /* ListDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDetailViewController.swift; sourceTree = "<group>"; };
@@ -73,6 +75,7 @@
 				A1EE0E652087FEBD0052B628 /* SmartListDetailViewController.swift */,
 				A1EE0E672087FEE00052B628 /* ListDetailViewController.swift */,
 				A1EE0E692087FEEF0052B628 /* TodoDetailViewController.swift */,
+				A18778FD208BDFF600E0B3F6 /* TodoNotesViewController.swift */,
 				A15A17CF207F0110007883BA /* Main.storyboard */,
 				A15A17D2207F0110007883BA /* todo_app_final_project_tarney.xcdatamodeld */,
 				A15A17D5207F0110007883BA /* Assets.xcassets */,
@@ -157,6 +160,7 @@
 				A15A17CC207F0110007883BA /* AppDelegate.swift in Sources */,
 				A1EE0E682087FEE00052B628 /* ListDetailViewController.swift in Sources */,
 				A15A17D4207F0110007883BA /* todo_app_final_project_tarney.xcdatamodeld in Sources */,
+				A18778FE208BDFF600E0B3F6 /* TodoNotesViewController.swift in Sources */,
 				A1EE0E662087FEBD0052B628 /* SmartListDetailViewController.swift in Sources */,
 				A1EE0E6C2087FF3B0052B628 /* ListTodosViewController.swift in Sources */,
 				A199E4982083E52B0079961E /* TestDBViewController.swift in Sources */,

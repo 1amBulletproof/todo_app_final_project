@@ -18,7 +18,6 @@ class TestDBViewController: UIViewController {
     var nextAvailableId:Int64 = 0
     var appDelegate:AppDelegate!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         //get access to the core data context
@@ -30,7 +29,6 @@ class TestDBViewController: UIViewController {
         self.queryResult.text = "Query Result"
         self.updateResult.text = "Update Result"
     }
-    
     
     @IBAction func insertAction(_ sender: Any) {
         print("insert action")
@@ -52,7 +50,6 @@ class TestDBViewController: UIViewController {
         self.insertResult.text = "inserted todo id:\(todo.todoID)"
     }
     
-    
     @IBAction func queryAction(_ sender: Any) {
         print("query action")
         
@@ -73,7 +70,6 @@ class TestDBViewController: UIViewController {
             print("error is \(error)")
         }
     }
-    
     
     @IBAction func updateAction(_ sender: Any) {
         print("update action")

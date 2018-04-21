@@ -8,7 +8,7 @@
 import UIKit
 
 class TodoRow : UITableViewCell {
-    @IBOutlet weak var rowTodoName: UILabel!
+    @IBOutlet weak var rowTodoNameLabel: UILabel!
     @IBOutlet weak var rowTodoDetailsButton: UIButton!
     @IBOutlet weak var rowTodoCompleteButton: UIButton!
 }
@@ -26,7 +26,6 @@ class ListTodosViewController: UIViewController {
         self.todosTable.delegate = self
         self.todosTable.dataSource = self
 
-        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
@@ -37,7 +36,6 @@ class ListTodosViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
     
     // MARK: - Navigation/segues
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -55,7 +53,6 @@ class ListTodosViewController: UIViewController {
         //        vc.powers = descriptions[section][row]
     }
     
-    
     @IBAction func unwindToTable(segue:UIStoryboardSegue)
     {
         print("transition unwind")
@@ -72,13 +69,11 @@ extension ListTodosViewController: UITableViewDataSource
         return 1
     }
     
-    
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         //TODO: return proper number of sections DEPENDING on the tableView passed-in
         print("titleForHeaderInSection")
         return ("Todos")
     }
-    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //TODO: properly populate data
@@ -86,13 +81,12 @@ extension ListTodosViewController: UITableViewDataSource
         return self.todos.count
     }
     
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //TODO: properly populate data
         print("got here")
         if tableView == self.todosTable {
             let cell = tableView.dequeueReusableCell(withIdentifier: "TodoRow", for: indexPath) as! TodoRow
-            cell.rowTodoName.text = self.todos[indexPath.row]
+            cell.rowTodoNameLabel.text = self.todos[indexPath.row]
             return cell
         } else { // tags table
             print("ERROR - not a todo row?!")
@@ -100,7 +94,6 @@ extension ListTodosViewController: UITableViewDataSource
         }
     }
 }
-
 
 extension ListTodosViewController: UITableViewDelegate
 {
@@ -110,12 +103,10 @@ extension ListTodosViewController: UITableViewDelegate
         return 50
     }
     
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
         print("time to segue to this view or tag detail")
     }
-    
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
@@ -139,14 +130,12 @@ extension ListTodosViewController: UITableViewDelegate
         //        tableView.deselectRow(at: indexPath, animated: false)
     }
     
-    
     /*
      // Override to support rearranging the table view.
      override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
      
      }
      */
-    
     
     /*
      // Override to support conditional rearranging of the table view.

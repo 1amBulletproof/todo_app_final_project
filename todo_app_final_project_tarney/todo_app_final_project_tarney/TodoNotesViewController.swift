@@ -1,26 +1,24 @@
 //
-//  TagDetailViewController.swift
+//  TodoNotesViewController.swift
 //  todo_app_final_project_tarney
 //
-//  Created by Brandon Tarney on 4/18/18.
+//  Created by Brandon Tarney on 4/21/18.
 //  Copyright © 2018 Johns Hopkins University. All rights reserved.
 //
 
 import UIKit
 
-class ListDetailViewController: UIViewController {
+class TodoNotesViewController: UIViewController {
 
-    @IBOutlet weak var listNameText: UITextView!
+    @IBOutlet weak var todoNameText: UITextView!
+    @IBOutlet weak var todoDetailsText: UITextView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Do any additional setup after loading the view.
     }
-    
-    @IBAction func saveListDetails(_ sender: Any) {
-        print("Tag name is \(self.listNameText.text)")
-    }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
