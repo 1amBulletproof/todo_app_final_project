@@ -21,7 +21,7 @@ class ListTodosViewController: UIViewController {
     @IBOutlet weak var todosTable: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("ViewsAndTags Controller INIT")
+        print("ListTodosViewController::viewDidLoad(): ViewsAndTags Controller INIT")
         
         self.todosTable.delegate = self
         self.todosTable.dataSource = self
@@ -41,7 +41,7 @@ class ListTodosViewController: UIViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
-        print("segue is \(segue.identifier!)")
+        print("ListTodosViewController::prepareForSegue(): segue is \(segue.identifier!)")
         //        let indexPath = tableView.indexPathForSelectedRow!
         //        let section = indexPath.section
         //        let row = indexPath.row
@@ -53,10 +53,6 @@ class ListTodosViewController: UIViewController {
         //        vc.powers = descriptions[section][row]
     }
     
-    @IBAction func unwindToTable(segue:UIStoryboardSegue)
-    {
-        print("transition unwind")
-    }
 }
 
 // MARK: - Table view data source
@@ -64,32 +60,32 @@ extension ListTodosViewController: UITableViewDataSource
 {
     //MARK: - UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
-        print("numberOfSections")
+        print("ListTodosViewController::numberOfSections(): 1")
         //TODO: return proper number of sections DEPENDING on the tableView passed-in
         return 1
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         //TODO: return proper number of sections DEPENDING on the tableView passed-in
-        print("titleForHeaderInSection")
+        print("ListTodosViewController::titleForHeaderInSection(): Todos")
         return ("Todos")
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //TODO: properly populate data
-        print("numberOfRowsInSection")
+        print("ListTodosViewController::numberOfRowsInSection(): \(self.todos.count)")
         return self.todos.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //TODO: properly populate data
-        print("got here")
+        print("ListTodosViewController::cellForRowAt(): row \(indexPath.row)")
         if tableView == self.todosTable {
             let cell = tableView.dequeueReusableCell(withIdentifier: "TodoRow", for: indexPath) as! TodoRow
             cell.rowTodoNameLabel.text = self.todos[indexPath.row]
             return cell
         } else { // tags table
-            print("ERROR - not a todo row?!")
+            print("ListTodosViewController::cellForRowAt(): ERROR - not a todo row?!")
             return UITableViewCell()
         }
     }
@@ -99,13 +95,13 @@ extension ListTodosViewController: UITableViewDelegate
 {
     //MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        print("heightForRowAt")
+        print("ListTodosViewController::heightForRowAt() 50")
         return 50
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
-        print("time to segue to this view or tag detail")
+        print("ListTodosViewController::didSelectRowAt(): selected row \(indexPath.row)")
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -113,7 +109,6 @@ extension ListTodosViewController: UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        print("stuff")
         if editingStyle == .delete
         {
             //TODO: remove the deleted object from your data source.
@@ -121,13 +116,6 @@ extension ListTodosViewController: UITableViewDelegate
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }
-    }
-    
-    func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-        print("touching accessory button")
-        //        tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-        ////        performSegue(withIdentifier: "superHeroAccessorySegue", sender: self)
-        //        tableView.deselectRow(at: indexPath, animated: false)
     }
     
     /*

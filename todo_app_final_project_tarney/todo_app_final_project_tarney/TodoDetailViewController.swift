@@ -17,6 +17,7 @@ class TodoDetailViewController: UIViewController {
     @IBOutlet weak var listComboBox1: UIPickerView!
     @IBOutlet weak var listComboBox2: UIPickerView!
     @IBOutlet weak var listComboBox3: UIPickerView!
+    @IBOutlet weak var savedLabel: UILabel!
     
     let list = ["marzipan", "active", "gym", "important"]
     
@@ -29,7 +30,17 @@ class TodoDetailViewController: UIViewController {
         self.listComboBox2.dataSource = self
         self.listComboBox3.delegate = self
         self.listComboBox3.dataSource = self
+        
+        //Date picker how-to: https://stackoverflow.com/questions/40484182/ios-swift-3-uidatepicker
 
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.savedLabel.isHidden = true
+    }
+    
+    @IBAction func saveTodo(_ sender: Any) {
+        self.savedLabel.isHidden = false
     }
     
     override func didReceiveMemoryWarning() {
@@ -56,7 +67,7 @@ extension TodoDetailViewController: UIPickerViewDelegate {
     
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        print("selected \(self.list[row])")
+        print("TodoDetailViewController::didSelectRow(): selected \(self.list[row])")
     }
 }
 

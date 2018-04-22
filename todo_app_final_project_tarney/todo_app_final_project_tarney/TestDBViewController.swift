@@ -21,7 +21,7 @@ class TestDBViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         //get access to the core data context
-        appDelegate = UIApplication.shared.delegate as! AppDelegate
+        self.appDelegate = UIApplication.shared.delegate as! AppDelegate
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -31,7 +31,7 @@ class TestDBViewController: UIViewController {
     }
     
     @IBAction func insertAction(_ sender: Any) {
-        print("insert action")
+        print("TestDB::insertAction(): insert action")
         
         let context = appDelegate.persistentContainer.viewContext
         
@@ -44,39 +44,51 @@ class TestDBViewController: UIViewController {
         todo.dueDate = Date.distantPast
         todo.details = "This is the first todo"
         
+        let list = NSEntityDescription.insertNewObject(forEntityName: "List", into:context) as! List
+        list.name = "List 1"
+        list.listID = self.nextAvailableId
+        self.nextAvailableId += 1
+        
+        //relationships
+        list.addToTodos(todo)
+        todo.addToLists(list)
+        
         appDelegate.saveContext()
         
         //update view w/ results?
-        self.insertResult.text = "inserted todo id:\(todo.todoID)"
+        self.insertResult.text = "inserted todo id:\(todo.todoID)\ninserted list id:\(list.listID)"
     }
     
     @IBAction func queryAction(_ sender: Any) {
-        print("query action")
+        print("TestDB::queryAction(): query action")
         
         //query for testing
         let context = appDelegate.persistentContainer.viewContext
-        let fetchRequest: NSFetchRequest<Todo> = Todo.fetchRequest()
+        let todoFetchRequest: NSFetchRequest<Todo> = Todo.fetchRequest()
+        let listFetchRequest: NSFetchRequest<List> = List.fetchRequest()
         
-        let predicate = NSPredicate(format: "todoID == 1")
-        fetchRequest.predicate = predicate
+//        let predicate = NSPredicate(format: "todoID == 1")
+//        fetchRequest.predicate = predicate
         
         do {
-            let todos = try context.fetch(fetchRequest)
+            let todos = try context.fetch(todoFetchRequest)
+            let lists = try context.fetch(listFetchRequest)
 
             //update view w/ results
-            self.queryResult.text = "Query found \(todos.count) todos"
-            
+            self.queryResult.text = "Query found \(todos.count) todos & \(lists.count) lists\n"
         } catch {
-            print("error is \(error)")
+            print("TestDB::queryAction(): error is \(error)")
         }
     }
     
     @IBAction func updateAction(_ sender: Any) {
-        print("update action")
+        print("TestDB::updateAction(): update action")
         
         //update/delete for testing
         let context = appDelegate.persistentContainer.viewContext
         let fetchRequest: NSFetchRequest<Todo> = Todo.fetchRequest()
+        let listFetchRequest: NSFetchRequest<List> = List.fetchRequest()
+        let smartListFetchRequest: NSFetchRequest<SmartList> = SmartList.fetchRequest()
         
         do {
             let todos = try context.fetch(fetchRequest)
@@ -84,12 +96,27 @@ class TestDBViewController: UIViewController {
                 context.delete(todo)
                 
                 //update view w/ results
-                self.updateResult.text = "deleted all todos"
+                self.updateResult.text = "\ndeleted a todo"
                 self.nextAvailableId = 0
+            }
+            let lists = try context.fetch(listFetchRequest)
+            for list in lists {
+                context.delete(list)
+                
+                //update view w/ results
+                self.updateResult.text! += "\ndeleted a list"
+            }
+            
+            let smartLists = try context.fetch(smartListFetchRequest)
+            for smartList in smartLists {
+                context.delete(smartList)
+                
+                //update view w/ results
+                self.updateResult.text! += "\ndeleted a smart list"
             }
 
         } catch {
-            print("error is \(error)")
+            print("TestDB::updateAction(): error is \(error)")
         }
     }
     

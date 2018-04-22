@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class SmartListRow : UITableViewCell {
     @IBOutlet weak var rowSmartListNameLabel: UILabel!
@@ -21,17 +22,20 @@ class ListRow : UITableViewCell {
 }
 
 class AllListsViewController: UIViewController {
-    
-    let smartLists = ["All", "Project Marzipan", "Today"]
-    let lists = ["marzipan", "active"]
 
     @IBOutlet weak var smartListsTable: UITableView!
     @IBOutlet weak var listsTable: UITableView!
     
+    let dbManager = DatabaseManager()
+    
+    var appDelegate:AppDelegate!
+    
+    var smartListsFromDB: [SmartList] = []
+    var listsFromDB:[List] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("ViewsAndTags Controller INIT")
-        
+        print("AllListsViewController::viewDidLoad(): Start")
         self.smartListsTable.delegate = self
         self.smartListsTable.dataSource = self
         self.listsTable.delegate = self
@@ -43,6 +47,13 @@ class AllListsViewController: UIViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.listsFromDB = dbManager.getAllLists()
+        self.smartListsFromDB = dbManager.getAllSmartLists()
+        self.smartListsTable.reloadData()
+        self.listsTable.reloadData()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -52,7 +63,7 @@ class AllListsViewController: UIViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
-        print("segue is \(segue.identifier!)")
+        print("AllListsViewController::prepareForSegue(): segue is \(segue.identifier!)")
         //        let indexPath = tableView.indexPathForSelectedRow!
         //        let section = indexPath.section
         //        let row = indexPath.row
@@ -63,11 +74,7 @@ class AllListsViewController: UIViewController {
         //        vc.companyName = companies[section]
         //        vc.powers = descriptions[section][row]
     }
-    
-    @IBAction func unwindToTable(segue:UIStoryboardSegue)
-    {
-        print("transition unwind")
-    }
+
 }
 
 // MARK: - Table view data source
@@ -75,7 +82,7 @@ extension AllListsViewController: UITableViewDataSource
 {
     //MARK: - UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
-        print("numberOfSections")
+        print("AllListsViewController::numberOfSections(): 1")
         //TODO: return proper number of sections DEPENDING on the tableView passed-in
         if tableView == self.smartListsTable {
             return 1
@@ -86,34 +93,37 @@ extension AllListsViewController: UITableViewDataSource
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         //TODO: return proper number of sections DEPENDING on the tableView passed-in
-        print("titleForHeaderInSection")
+
         if tableView == self.smartListsTable {
+            print("AllListsViewController::titleForHeaderInSection(): Views")
             return "Views"
         } else { //lists table
+            print("AllListsViewController::titleForHeaderInSection(): Tags")
             return "Tags"
         }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //TODO: properly populate data
-        print("numberOfRowsInSection")
         if tableView == self.smartListsTable {
-            return self.smartLists.count
+            print("AllListsViewController::numberOfRowsInSection(): \(self.smartListsFromDB.count)")
+            return self.smartListsFromDB.count
         } else { // lists table
-            return self.lists.count
+            print("AllListsViewController::numberOfRowsInSection(): \(self.listsFromDB.count)")
+            return self.listsFromDB.count
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //TODO: properly populate data
-        print("got here")
+        print("AllListsViewController::cellForRowAt(): start")
         if tableView == self.smartListsTable {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SmartListRow", for: indexPath) as! SmartListRow
-            cell.rowSmartListNameLabel.text = self.smartLists[indexPath.row]
+            cell.rowSmartListNameLabel.text = self.smartListsFromDB[indexPath.row].name!
             return cell
         } else { // lists table
             let cell = tableView.dequeueReusableCell(withIdentifier: "ListRow", for: indexPath) as! ListRow
-            cell.rowListNameLabel.text = self.lists[indexPath.row]
+            cell.rowListNameLabel.text = self.listsFromDB[indexPath.row].name!
             return cell
         }
     }
@@ -124,13 +134,13 @@ extension AllListsViewController: UITableViewDelegate
 {
     //MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        print("heightForRowAt")
+        print("AllListsViewController::heightForRowAt(): 50")
         return 50
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
-        print("time to segue to this view or tag detail")
+        print("AllListsViewController::didSelectRowAt(): start")
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -138,7 +148,6 @@ extension AllListsViewController: UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        print("stuff")
         if editingStyle == .delete
         {
             //TODO: remove the deleted object from your data source.
@@ -146,13 +155,6 @@ extension AllListsViewController: UITableViewDelegate
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }
-    }
-    
-    func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-        print("touching accessory button")
-        //        tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-        ////        performSegue(withIdentifier: "superHeroAccessorySegue", sender: self)
-        //        tableView.deselectRow(at: indexPath, animated: false)
     }
     
     

@@ -7,18 +7,41 @@
 //
 
 import UIKit
+import CoreData
 
 class ListDetailViewController: UIViewController {
 
     @IBOutlet weak var listNameText: UITextView!
+    @IBOutlet weak var savedLabel: UILabel!
+    
+    var appDelegate:AppDelegate!
+    var nextListIdNumber:Int64!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
+        self.nextListIdNumber = 0
 
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.savedLabel.isHidden = true
+    }
+    
     @IBAction func saveListDetails(_ sender: Any) {
-        print("Tag name is \(self.listNameText.text)")
+        print("ListDetailViewController::saveListDetails(): List name is \(self.listNameText.text)")
+
+        let context = self.appDelegate.persistentContainer.viewContext
+        
+        let list = NSEntityDescription.insertNewObject(forEntityName: "List", into: context) as! List
+        list.name = self.listNameText.text!
+        list.listID = self.nextListIdNumber
+        
+        appDelegate.saveContext()
+    
+        self.nextListIdNumber = self.nextListIdNumber + 1
+        self.savedLabel.isHidden = false
     }
     
     override func didReceiveMemoryWarning() {
