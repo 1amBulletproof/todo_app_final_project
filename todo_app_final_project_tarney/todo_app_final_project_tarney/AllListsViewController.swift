@@ -96,10 +96,10 @@ extension AllListsViewController: UITableViewDataSource
 
         if tableView == self.smartListsTable {
             print("AllListsViewController::titleForHeaderInSection(): Views")
-            return "Views"
+            return "Smart Lists"
         } else { //lists table
             print("AllListsViewController::titleForHeaderInSection(): Tags")
-            return "Tags"
+            return "Lists"
         }
     }
     
