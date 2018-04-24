@@ -15,13 +15,13 @@ class ListDetailViewController: UIViewController {
     @IBOutlet weak var savedLabel: UILabel!
     
     var appDelegate:AppDelegate!
-    var nextListIdNumber:Int64!
+    static var nextListIdNumber:Int64!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.appDelegate = UIApplication.shared.delegate as! AppDelegate
         
-        self.nextListIdNumber = 0
+        ListDetailViewController.nextListIdNumber = 0
 
     }
     
@@ -36,11 +36,11 @@ class ListDetailViewController: UIViewController {
         
         let list = NSEntityDescription.insertNewObject(forEntityName: "List", into: context) as! List
         list.name = self.listNameText.text!
-        list.listID = self.nextListIdNumber
+        list.listID = ListDetailViewController.nextListIdNumber
         
         appDelegate.saveContext()
     
-        self.nextListIdNumber = self.nextListIdNumber + 1
+        ListDetailViewController.nextListIdNumber = ListDetailViewController.nextListIdNumber + 1
         self.savedLabel.isHidden = false
     }
     

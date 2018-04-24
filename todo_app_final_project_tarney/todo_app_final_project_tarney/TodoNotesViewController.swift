@@ -13,6 +13,8 @@ class TodoNotesViewController: UIViewController {
     @IBOutlet weak var todoNameText: UITextView!
     @IBOutlet weak var todoDetailsText: UITextView!
     
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

@@ -15,8 +15,9 @@ class TodoRow : UITableViewCell {
 
 
 class ListTodosViewController: UIViewController {
-    
-    let todos = ["todo1", "todo2", "todo3"]
+
+    //set via segue
+    var list: GenericList!
     
     @IBOutlet weak var todosTable: UITableView!
     override func viewDidLoad() {
@@ -31,6 +32,13 @@ class ListTodosViewController: UIViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
+    
+//    override func viewWillAppear(_ animated: Bool) {
+//        self.todosFromDB = dbManager.getAllTodosForList(self.list)
+//        self.smartListsFromDB = dbManager.getAllSmartLists()
+//        self.smartListsTable.reloadData()
+//        self.listsTable.reloadData()
+//    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

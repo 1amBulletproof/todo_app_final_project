@@ -23,7 +23,7 @@ class SmartListDetailViewController: UIViewController {
     var list3ChosenValue: List?
 
     var appDelegate:AppDelegate!
-    var nextSmartListIdNumber:Int64!
+    static var nextSmartListIdNumber:Int64!
     
     var listsFromDB:[List] = []
     
@@ -41,7 +41,7 @@ class SmartListDetailViewController: UIViewController {
         
         self.appDelegate = UIApplication.shared.delegate as! AppDelegate
 
-        self.nextSmartListIdNumber = 0
+        SmartListDetailViewController.nextSmartListIdNumber = 0
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -69,7 +69,7 @@ class SmartListDetailViewController: UIViewController {
         
         let smartList = NSEntityDescription.insertNewObject(forEntityName: "SmartList", into: context) as! SmartList
         smartList.name = self.smartListNameText.text!
-        smartList.smartListID = self.nextSmartListIdNumber
+        smartList.smartListID = SmartListDetailViewController.nextSmartListIdNumber
  
         if let chosenList1 = self.list1ChosenValue {
             smartList.addToLists(chosenList1)
@@ -86,7 +86,7 @@ class SmartListDetailViewController: UIViewController {
         
         appDelegate.saveContext()
         
-        self.nextSmartListIdNumber = self.nextSmartListIdNumber + 1
+        SmartListDetailViewController.nextSmartListIdNumber = SmartListDetailViewController.nextSmartListIdNumber + 1
         self.savedLabel.isHidden = false
     }
     

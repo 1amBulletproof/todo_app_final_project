@@ -21,6 +21,9 @@ class TodoDetailViewController: UIViewController {
     
     let list = ["marzipan", "active", "gym", "important"]
     
+    var appDelegate:AppDelegate!
+    static var nextTodoIdNumber:Int64!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -31,6 +34,9 @@ class TodoDetailViewController: UIViewController {
         self.listComboBox3.delegate = self
         self.listComboBox3.dataSource = self
         
+        self.appDelegate = UIApplication.shared.delegate as! AppDelegate
+        TodoDetailViewController.nextTodoIdNumber = 0;
+        
         //Date picker how-to: https://stackoverflow.com/questions/40484182/ios-swift-3-uidatepicker
 
     }
@@ -40,6 +46,17 @@ class TodoDetailViewController: UIViewController {
     }
     
     @IBAction func saveTodo(_ sender: Any) {
+        print("ListDetailViewController::saveListDetails(): List name is \(self.listNameText.text)")
+        
+        let context = self.appDelegate.persistentContainer.viewContext
+        
+        let list = NSEntityDescription.insertNewObject(forEntityName: "List", into: context) as! List
+        list.name = self.listNameText.text!
+        list.listID = self.nextListIdNumber
+        
+        appDelegate.saveContext()
+        
+        self.nextListIdNumber = self.nextListIdNumber + 1
         self.savedLabel.isHidden = false
     }
     

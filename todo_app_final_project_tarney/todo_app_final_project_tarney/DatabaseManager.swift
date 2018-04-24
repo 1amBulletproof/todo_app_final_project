@@ -43,7 +43,6 @@ extension DatabaseManager { //Write Methods
 extension DatabaseManager { //Read methods
     
     func getAllLists() -> [List] {
-
         let context = self.appDelegate.persistentContainer.viewContext
         let listFetchRequest: NSFetchRequest<List> = List.fetchRequest()
         do {
@@ -58,7 +57,6 @@ extension DatabaseManager { //Read methods
     }
     
     func getAllSmartLists() -> [SmartList] {
-
         let context = self.appDelegate.persistentContainer.viewContext
         let smartListFetchRequest: NSFetchRequest<SmartList> = SmartList.fetchRequest()
         do {
@@ -73,11 +71,45 @@ extension DatabaseManager { //Read methods
         }
     }
     
-    func getAllTodos() -> [Todo] {
-        var tmpList:[Todo] = []
-        return tmpList
+    //TODO: implement & add comments
+    func getSmartListTodos(forSmartList: SmartList) -> [Todo] {
+        return []
     }
     
+    //TODO: use predicate instead?
+    //TODO: add comments
+    func getListTodos(forList list: List) -> [Todo] {
+        //query for testing
+        var todosInList:[Todo] = []
+        var allTodos = self.getAllTodos()
+            
+        for todo in allTodos {
+            if todo.lists!.contains(list) {
+                todosInList.append(todo)
+            }
+        }
+
+        return todosInList
+    }
+    
+    //TODO: add comments
+    func getAllTodos() -> [Todo] {
+        let context = self.appDelegate.persistentContainer.viewContext
+        
+        var todos: [Todo] = []
+        
+        let todosFetchRequest: NSFetchRequest<Todo> = Todo.fetchRequest()
+        
+        do {
+            todos = try context.fetch(todosFetchRequest)
+            
+        } catch {
+            print("DatabaseManager::getListTodos(): error is \(error)")
+        }
+        return todos
+    }
+    
+    //TODO: implement & add comments
     func getAllTodos(where: String) -> [Todo] {
         var tmpList:[Todo] = []
         return tmpList

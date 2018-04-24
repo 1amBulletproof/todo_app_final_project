@@ -15,6 +15,7 @@
 		A18778FC208BC28000E0B3F6 /* AllListsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18778FB208BC28000E0B3F6 /* AllListsViewController.swift */; };
 		A18778FE208BDFF600E0B3F6 /* TodoNotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18778FD208BDFF600E0B3F6 /* TodoNotesViewController.swift */; };
 		A1877900208D08A700E0B3F6 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18778FF208D08A700E0B3F6 /* DatabaseManager.swift */; };
+		A18EBBCD208EB1290023249F /* GenericList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18EBBCC208EB1290023249F /* GenericList.swift */; };
 		A199E4982083E52B0079961E /* TestDBViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A199E4972083E52B0079961E /* TestDBViewController.swift */; };
 		A1EE0E662087FEBD0052B628 /* SmartListDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EE0E652087FEBD0052B628 /* SmartListDetailViewController.swift */; };
 		A1EE0E682087FEE00052B628 /* ListDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EE0E672087FEE00052B628 /* ListDetailViewController.swift */; };
@@ -33,6 +34,7 @@
 		A18778FB208BC28000E0B3F6 /* AllListsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllListsViewController.swift; sourceTree = "<group>"; };
 		A18778FD208BDFF600E0B3F6 /* TodoNotesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoNotesViewController.swift; sourceTree = "<group>"; };
 		A18778FF208D08A700E0B3F6 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		A18EBBCC208EB1290023249F /* GenericList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericList.swift; sourceTree = "<group>"; };
 		A199E4972083E52B0079961E /* TestDBViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDBViewController.swift; sourceTree = "<group>"; };
 		A1EE0E652087FEBD0052B628 /* SmartListDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartListDetailViewController.swift; sourceTree = "<group>"; };
 		A1EE0E672087FEE00052B628 /* ListDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDetailViewController.swift; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 				A1EE0E692087FEEF0052B628 /* TodoDetailViewController.swift */,
 				A18778FD208BDFF600E0B3F6 /* TodoNotesViewController.swift */,
 				A18778FF208D08A700E0B3F6 /* DatabaseManager.swift */,
+				A18EBBCC208EB1290023249F /* GenericList.swift */,
 				A15A17CF207F0110007883BA /* Main.storyboard */,
 				A15A17D2207F0110007883BA /* todo_app_final_project_tarney.xcdatamodeld */,
 				A15A17D5207F0110007883BA /* Assets.xcassets */,
@@ -162,6 +165,7 @@
 			files = (
 				A15A17CC207F0110007883BA /* AppDelegate.swift in Sources */,
 				A1EE0E682087FEE00052B628 /* ListDetailViewController.swift in Sources */,
+				A18EBBCD208EB1290023249F /* GenericList.swift in Sources */,
 				A1877900208D08A700E0B3F6 /* DatabaseManager.swift in Sources */,
 				A15A17D4207F0110007883BA /* todo_app_final_project_tarney.xcdatamodeld in Sources */,
 				A18778FE208BDFF600E0B3F6 /* TodoNotesViewController.swift in Sources */,
