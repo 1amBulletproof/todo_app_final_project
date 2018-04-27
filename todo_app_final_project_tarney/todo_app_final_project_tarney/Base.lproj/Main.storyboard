@@ -506,6 +506,9 @@
                                 <rect key="frame" x="25" y="618" width="41" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Notes"/>
+                                <connections>
+                                    <segue destination="8XP-cV-4b4" kind="show" id="4EX-96-ESF"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="SAVED" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gvc-Yp-Lzu">
                                 <rect key="frame" x="145" y="628" width="85" height="28"/>
@@ -768,6 +771,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="shu-wb-Bh9"/>
+        <segue reference="4EX-96-ESF"/>
         <segue reference="9KL-Qd-wus"/>
         <segue reference="8JW-uM-Toa"/>
     </inferredMetricsTieBreakers>
