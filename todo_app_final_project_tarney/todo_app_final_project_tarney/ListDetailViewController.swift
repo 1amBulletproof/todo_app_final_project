@@ -14,14 +14,14 @@ class ListDetailViewController: UIViewController {
     @IBOutlet weak var listNameText: UITextView!
     @IBOutlet weak var savedLabel: UILabel!
     
-    var appDelegate:AppDelegate!
-    static var nextListIdNumber:Int64!
+    let dbManager = DatabaseManager()
+    
+    static var nextListIdNumber:Int64! = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.appDelegate = UIApplication.shared.delegate as! AppDelegate
         
-        ListDetailViewController.nextListIdNumber = 0
+        //TODO: set nextListIdNumber = dbManager.getMaxListId()
 
     }
     
@@ -31,14 +31,11 @@ class ListDetailViewController: UIViewController {
     
     @IBAction func saveListDetails(_ sender: Any) {
         print("ListDetailViewController::saveListDetails(): List name is \(self.listNameText.text)")
-
-        let context = self.appDelegate.persistentContainer.viewContext
         
-        let list = NSEntityDescription.insertNewObject(forEntityName: "List", into: context) as! List
-        list.name = self.listNameText.text!
-        list.listID = ListDetailViewController.nextListIdNumber
-        
-        appDelegate.saveContext()
+        dbManager.insertList(
+            name: self.listNameText.text!,
+            id: ListDetailViewController.nextListIdNumber,
+            todos: [])
     
         ListDetailViewController.nextListIdNumber = ListDetailViewController.nextListIdNumber + 1
         self.savedLabel.isHidden = false

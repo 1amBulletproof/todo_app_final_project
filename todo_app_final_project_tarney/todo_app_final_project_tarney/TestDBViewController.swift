@@ -75,7 +75,10 @@ class TestDBViewController: UIViewController {
             let lists = try context.fetch(listFetchRequest)
 
             //update view w/ results
-            self.queryResult.text = "Query found \(todos.count) todos & \(lists.count) lists\n"
+            for todo in lists[0].todos! {
+                let tmpTodo = todo as! Todo
+                self.queryResult.text = "Todo associated with list name: \(tmpTodo.name)"
+            }
         } catch {
             print("TestDB::queryAction(): error is \(error)")
         }

@@ -19,10 +19,15 @@ class TodoDetailViewController: UIViewController {
     @IBOutlet weak var listComboBox3: UIPickerView!
     @IBOutlet weak var savedLabel: UILabel!
     
-    let list = ["marzipan", "active", "gym", "important"]
+    var list1ChosenValue: List?
+    var list2ChosenValue: List?
+    var list3ChosenValue: List?
     
-    var appDelegate:AppDelegate!
-    static var nextTodoIdNumber:Int64!
+    let dbManager = DatabaseManager()
+    
+    var listsFromDB:[List] = []
+    
+    static var nextTodoIdNumber:Int64! = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,36 +39,57 @@ class TodoDetailViewController: UIViewController {
         self.listComboBox3.delegate = self
         self.listComboBox3.dataSource = self
         
-        self.appDelegate = UIApplication.shared.delegate as! AppDelegate
-        TodoDetailViewController.nextTodoIdNumber = 0;
-        
-        //Date picker how-to: https://stackoverflow.com/questions/40484182/ios-swift-3-uidatepicker
+        //TODO: nextTodoIdNumber = dbManager.getMaxTodoId() + 1
 
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.savedLabel.isHidden = true
+        self.listsFromDB = dbManager.getAllLists()
+        
+        self.listComboBox1.reloadAllComponents()
+        self.listComboBox2.reloadAllComponents()
+        self.listComboBox3.reloadAllComponents()
     }
     
     @IBAction func saveTodo(_ sender: Any) {
-        print("ListDetailViewController::saveListDetails(): List name is \(self.listNameText.text)")
+        print("TodoDetailViewController::saveListDetails(): Todo name is \(self.todoNameText.text)")
+
         
-        let context = self.appDelegate.persistentContainer.viewContext
-        
-        let list = NSEntityDescription.insertNewObject(forEntityName: "List", into: context) as! List
-        list.name = self.listNameText.text!
-        list.listID = self.nextListIdNumber
-        
-        appDelegate.saveContext()
-        
-        self.nextListIdNumber = self.nextListIdNumber + 1
+        var viewLists:[List] = []
+        if let chosenList1 = self.list1ChosenValue {
+            viewLists.append(chosenList1)
+            print("TodoDetailViewController::saveTodo(): adding list \(chosenList1.name) to SmartList")
+        }
+        if let chosenList2 = self.list2ChosenValue {
+            viewLists.append(chosenList2)
+            print("TodoDetailViewController::saveTodo(): adding list \(chosenList2.name) to SmartList")
+        }
+        if let chosenList3 = self.list3ChosenValue {
+            viewLists.append(chosenList3)
+            print("TodoDetailViewController::saveTodo(): adding list \(chosenList3.name) to SmartList")
+        }
+        print("There are \(viewLists.count) lists select for this todo")
+        //TODO:update each list set for each todo
+        dbManager.insertTodo(
+            name: self.todoNameText.text!,
+            id: TodoDetailViewController.nextTodoIdNumber,
+            lists: viewLists,
+            details: "",
+            startDate: self.startDatePicker.date,
+            dueDate: self.dueDatePicker.date)
+
+        TodoDetailViewController.nextTodoIdNumber = TodoDetailViewController.nextTodoIdNumber + 1
         self.savedLabel.isHidden = false
+        
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    //TODO:handle lists set for each todo
     
     /*
     // MARK: - Navigation
@@ -79,12 +105,18 @@ class TodoDetailViewController: UIViewController {
 
 extension TodoDetailViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return self.list[row]
+        return self.listsFromDB[row].name
     }
     
-    
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        print("TodoDetailViewController::didSelectRow(): selected \(self.list[row])")
+        print("TodoDetailViewController::didSelectRow(): selected \(self.listsFromDB[row].name)")
+        if pickerView == self.listComboBox1 {
+            self.list1ChosenValue = self.listsFromDB[row]
+        } else if pickerView == self.listComboBox2 {
+            self.list2ChosenValue = self.listsFromDB[row]
+        } else {
+            self.list3ChosenValue = self.listsFromDB[row]
+        }
     }
 }
 
@@ -94,7 +126,11 @@ extension TodoDetailViewController: UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return self.list.count
+        return self.listsFromDB.count
     }
     
 }
+
+
+
+

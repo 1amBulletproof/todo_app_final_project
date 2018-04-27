@@ -141,7 +141,7 @@
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" title="Select Smart List"/>
                                                     <connections>
-                                                        <segue destination="hK3-Lq-ESv" kind="show" identifier="showSmartListTodos" id="8nd-P8-i8Q"/>
+                                                        <action selector="selectSmartList:" destination="tMu-Sg-G9Y" eventType="touchUpInside" id="orN-KJ-I2i"/>
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bZU-qR-lvX">
@@ -186,7 +186,7 @@
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" title="Select list"/>
                                                     <connections>
-                                                        <segue destination="hK3-Lq-ESv" kind="show" identifier="ShowListTodos" id="82y-Wp-b2r"/>
+                                                        <action selector="selectList:" destination="tMu-Sg-G9Y" eventType="touchUpInside" id="a3B-UI-3B3"/>
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wey-Ag-9r8">
@@ -238,11 +238,12 @@
                     <connections>
                         <outlet property="listsTable" destination="5CA-pY-ph8" id="CYC-2L-NH7"/>
                         <outlet property="smartListsTable" destination="Iwg-e2-zaC" id="vfO-82-nqD"/>
+                        <segue destination="hK3-Lq-ESv" kind="show" identifier="ShowListTodos" id="ein-oo-P6p"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6LT-gU-f61" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-119.2" y="196.55172413793105"/>
+            <point key="canvasLocation" x="-119" y="197"/>
         </scene>
         <!--Smart List Details-->
         <scene sceneID="eY5-1e-KR5">
@@ -314,7 +315,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="SAVED" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LHu-Jj-nU6">
                                 <rect key="frame" x="150" y="625" width="85" height="28"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
                                 <color key="textColor" red="0.4026125167151835" green="0.69784275386327499" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -509,7 +510,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="SAVED" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gvc-Yp-Lzu">
                                 <rect key="frame" x="145" y="628" width="85" height="28"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="23"/>
                                 <color key="textColor" red="0.40261251669999998" green="0.69784275389999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -543,7 +544,7 @@
                                 <rect key="frame" x="0.0" y="194" width="375" height="434"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda. blah blah blah blha blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blablah blah blah blha blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blablah blah blah blha blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blablah blah blah blha blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blablah blah blah blha blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blablah blah blah blha blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blablah blah blah blha blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah</mutableString>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda. blah blah blah blha blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blablah blah blah blha blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blablah blah blah blha blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blablah blah blah blha blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blablah blah blah blha blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blablah blah blah blha blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blablah blah blah blha blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
@@ -582,13 +583,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="List Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yYW-bW-w2f">
-                                <rect key="frame" x="148" y="108" width="77" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="20" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sTj-KA-29T">
                                 <rect key="frame" x="551" y="349" width="784" height="224"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -608,7 +602,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Enter a new list here" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Ubh-YW-oyo">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Enter a new list name here" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Ubh-YW-oyo">
                                 <rect key="frame" x="80" y="148" width="215" height="61"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -626,7 +620,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="SAVED" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CYf-hk-rOY">
                                 <rect key="frame" x="145" y="628" width="85" height="28"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
                                 <color key="textColor" red="0.40261251669999998" green="0.69784275389999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -774,8 +768,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="shu-wb-Bh9"/>
-        <segue reference="jBw-AP-coN"/>
-        <segue reference="8nd-P8-i8Q"/>
+        <segue reference="9KL-Qd-wus"/>
         <segue reference="8JW-uM-Toa"/>
     </inferredMetricsTieBreakers>
 </document>

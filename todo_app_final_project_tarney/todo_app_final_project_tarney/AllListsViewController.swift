@@ -32,6 +32,7 @@ class AllListsViewController: UIViewController {
     
     var smartListsFromDB: [SmartList] = []
     var listsFromDB:[List] = []
+    var listSelected:GenericList!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,11 +60,57 @@ class AllListsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func selectSmartList(_ sender: Any) {
+        //TODO: need to use the actual NAME of the smart list, not the table row!
+        print("AllListsViewController::selectSmartList(): start")
+        let mySender = sender as! UIButton
+        if let cellRow = mySender.superview?.superview as? UITableViewCell {
+            let indexPath = self.smartListsTable.indexPath(for: cellRow)
+            print("AllListsViewController::selectSmartList(): indexPath = \(indexPath!.row)")
+            for smartList in self.smartListsFromDB {
+                if smartList.smartListID == indexPath!.row {
+                    self.listSelected = GenericList(smartList)
+                    print("found a matching smartlist!")
+                }
+            }
+
+        }
+        performSegue(withIdentifier: "ShowListTodos", sender: nil)
+        
+    }
+    
+    @IBAction func selectList(_ sender: Any) {
+        //TODO: need to use the actual NAME of the smart list, not the table row!
+        print("AllListsViewController::selectList(): start")
+        let mySender = sender as! UIButton
+        if let cellRow = mySender.superview?.superview as? UITableViewCell {
+            let indexPath = self.listsTable.indexPath(for: cellRow)
+            print("AllListsViewController::selectList(): indexPath = \(indexPath!.row)")
+            for list in self.listsFromDB {
+                if list.listID == indexPath!.row {
+                    self.listSelected = GenericList(list)
+                    print("found a matching smartlist!")
+                }
+            }
+            
+        }
+        performSegue(withIdentifier: "ShowListTodos", sender: nil)
+        
+    }
+    
     // MARK: - Navigation/segues
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
         print("AllListsViewController::prepareForSegue(): segue is \(segue.identifier!)")
+        if (segue.identifier == "ShowListTodos") {
+            var todoList = segue.destination as! ListTodosViewController
+            todoList.list = self.listSelected
+        }
+//        if (segue.identifier ==  "ShowSmartListTodos" || segue.identifier == "ShowListTodos") {
+//            let todoList = segue.destination as! ListTodosViewController
+//        }
+//        todoList.list = GenericList(
         //        let indexPath = tableView.indexPathForSelectedRow!
         //        let section = indexPath.section
         //        let row = indexPath.row
@@ -82,7 +129,7 @@ extension AllListsViewController: UITableViewDataSource
 {
     //MARK: - UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
-        print("AllListsViewController::numberOfSections(): 1")
+//        print("AllListsViewController::numberOfSections(): 1")
         //TODO: return proper number of sections DEPENDING on the tableView passed-in
         if tableView == self.smartListsTable {
             return 1
@@ -95,10 +142,10 @@ extension AllListsViewController: UITableViewDataSource
         //TODO: return proper number of sections DEPENDING on the tableView passed-in
 
         if tableView == self.smartListsTable {
-            print("AllListsViewController::titleForHeaderInSection(): Views")
+//            print("AllListsViewController::titleForHeaderInSection(): Views")
             return "Smart Lists"
         } else { //lists table
-            print("AllListsViewController::titleForHeaderInSection(): Tags")
+//            print("AllListsViewController::titleForHeaderInSection(): Tags")
             return "Lists"
         }
     }
@@ -106,17 +153,17 @@ extension AllListsViewController: UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //TODO: properly populate data
         if tableView == self.smartListsTable {
-            print("AllListsViewController::numberOfRowsInSection(): \(self.smartListsFromDB.count)")
+//            print("AllListsViewController::numberOfRowsInSection(): \(self.smartListsFromDB.count)")
             return self.smartListsFromDB.count
         } else { // lists table
-            print("AllListsViewController::numberOfRowsInSection(): \(self.listsFromDB.count)")
+//            print("AllListsViewController::numberOfRowsInSection(): \(self.listsFromDB.count)")
             return self.listsFromDB.count
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //TODO: properly populate data
-        print("AllListsViewController::cellForRowAt(): start")
+//        print("AllListsViewController::cellForRowAt(): start")
         if tableView == self.smartListsTable {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SmartListRow", for: indexPath) as! SmartListRow
             cell.rowSmartListNameLabel.text = self.smartListsFromDB[indexPath.row].name!
@@ -134,13 +181,13 @@ extension AllListsViewController: UITableViewDelegate
 {
     //MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        print("AllListsViewController::heightForRowAt(): 50")
+//        print("AllListsViewController::heightForRowAt(): 50")
         return 50
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
-        print("AllListsViewController::didSelectRowAt(): start")
+//        print("AllListsViewController::didSelectRowAt(): start")
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

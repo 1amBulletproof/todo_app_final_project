@@ -19,7 +19,10 @@ class ListTodosViewController: UIViewController {
     //set via segue
     var list: GenericList!
     
+    var todosFromDB:[Todo] = []
+    
     @IBOutlet weak var todosTable: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("ListTodosViewController::viewDidLoad(): ViewsAndTags Controller INIT")
@@ -27,18 +30,12 @@ class ListTodosViewController: UIViewController {
         self.todosTable.delegate = self
         self.todosTable.dataSource = self
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        self.todosFromDB = dbManager.getAllTodosForList(self.list)
-//        self.smartListsFromDB = dbManager.getAllSmartLists()
-//        self.smartListsTable.reloadData()
-//        self.listsTable.reloadData()
-//    }
+    override func viewWillAppear(_ animated: Bool) {
+        self.todosFromDB = self.list.getTodos()
+        self.todosTable.reloadData()
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -68,29 +65,29 @@ extension ListTodosViewController: UITableViewDataSource
 {
     //MARK: - UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
-        print("ListTodosViewController::numberOfSections(): 1")
+//        print("ListTodosViewController::numberOfSections(): 1")
         //TODO: return proper number of sections DEPENDING on the tableView passed-in
         return 1
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         //TODO: return proper number of sections DEPENDING on the tableView passed-in
-        print("ListTodosViewController::titleForHeaderInSection(): Todos")
+//        print("ListTodosViewController::titleForHeaderInSection(): Todos")
         return ("Todos")
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //TODO: properly populate data
-        print("ListTodosViewController::numberOfRowsInSection(): \(self.todos.count)")
-        return self.todos.count
+//        print("ListTodosViewController::numberOfRowsInSection(): \(self.todosFromDB.count)")
+        return self.todosFromDB.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //TODO: properly populate data
-        print("ListTodosViewController::cellForRowAt(): row \(indexPath.row)")
+//        print("ListTodosViewController::cellForRowAt(): row \(indexPath.row)")
         if tableView == self.todosTable {
             let cell = tableView.dequeueReusableCell(withIdentifier: "TodoRow", for: indexPath) as! TodoRow
-            cell.rowTodoNameLabel.text = self.todos[indexPath.row]
+            cell.rowTodoNameLabel.text = self.todosFromDB[indexPath.row].name
             return cell
         } else { // tags table
             print("ListTodosViewController::cellForRowAt(): ERROR - not a todo row?!")
@@ -103,13 +100,13 @@ extension ListTodosViewController: UITableViewDelegate
 {
     //MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        print("ListTodosViewController::heightForRowAt() 50")
+//        print("ListTodosViewController::heightForRowAt() 50")
         return 50
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
-        print("ListTodosViewController::didSelectRowAt(): selected row \(indexPath.row)")
+//        print("ListTodosViewController::didSelectRowAt(): selected row \(indexPath.row)")
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
