@@ -60,10 +60,12 @@ class AllListsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    //MARK: - Button Callbacks
     @IBAction func selectSmartList(_ sender: Any) {
         //TODO: need to use the actual NAME of the smart list, not the table row!
         print("AllListsViewController::selectSmartList(): start")
         let mySender = sender as! UIButton
+
         if let cellRow = mySender.superview?.superview as? UITableViewCell {
             let indexPath = self.smartListsTable.indexPath(for: cellRow)
             print("AllListsViewController::selectSmartList(): indexPath = \(indexPath!.row)")
@@ -75,6 +77,15 @@ class AllListsViewController: UIViewController {
             }
 
         }
+        
+        print("TEST IS HERE")
+        if let listRow = mySender.superview as? ListRow {
+            print(listRow)
+        } else if let listRow2 = mySender.superview?.superview as? ListRow {
+            print(listRow2)
+        }
+        print("TEST IS FINISHED")
+        
         performSegue(withIdentifier: "ShowListTodos", sender: nil)
         
     }
