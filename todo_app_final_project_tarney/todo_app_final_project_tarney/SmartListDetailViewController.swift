@@ -60,6 +60,7 @@ class SmartListDetailViewController: UIViewController {
     
     func setListsFromDB() {
         self.listsFromDB = dbManager.getAllLists()
+        SmartListDetailViewController.nextSmartListIdNumber = self.dbManager.getMaxSmartListId() + 1
     }
 
     override func didReceiveMemoryWarning() {

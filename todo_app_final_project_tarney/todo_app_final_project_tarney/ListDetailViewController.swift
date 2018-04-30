@@ -20,13 +20,11 @@ class ListDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //TODO: set nextListIdNumber = dbManager.getMaxListId()
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.savedLabel.isHidden = true
+        ListDetailViewController.nextListIdNumber = self.dbManager.getMaxListId() + 1
     }
     
     @IBAction func saveListDetails(_ sender: Any) {

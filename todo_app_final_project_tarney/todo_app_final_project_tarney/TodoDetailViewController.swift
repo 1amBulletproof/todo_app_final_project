@@ -38,8 +38,6 @@ class TodoDetailViewController: UIViewController {
         self.listComboBox2.dataSource = self
         self.listComboBox3.delegate = self
         self.listComboBox3.dataSource = self
-        
-        //TODO: nextTodoIdNumber = dbManager.getMaxTodoId() + 1
 
     }
     
@@ -50,6 +48,9 @@ class TodoDetailViewController: UIViewController {
         self.listComboBox1.reloadAllComponents()
         self.listComboBox2.reloadAllComponents()
         self.listComboBox3.reloadAllComponents()
+        
+        TodoDetailViewController.nextTodoIdNumber = self.dbManager.getMaxTodoId() + 1
+    
     }
     
     @IBAction func saveTodo(_ sender: Any) {
@@ -70,6 +71,7 @@ class TodoDetailViewController: UIViewController {
             print("TodoDetailViewController::saveTodo(): adding list \(chosenList3.name) to SmartList")
         }
         print("There are \(viewLists.count) lists select for this todo")
+        
         //TODO:update each list set for each todo
         dbManager.insertTodo(
             name: self.todoNameText.text!,
@@ -89,7 +91,6 @@ class TodoDetailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    //TODO:handle lists set for each todo
     
     /*
     // MARK: - Navigation

@@ -63,27 +63,22 @@ class ListTodosViewController: UIViewController {
 // MARK: - Table view data source
 extension ListTodosViewController: UITableViewDataSource
 {
-    //MARK: - UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
 //        print("ListTodosViewController::numberOfSections(): 1")
-        //TODO: return proper number of sections DEPENDING on the tableView passed-in
         return 1
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        //TODO: return proper number of sections DEPENDING on the tableView passed-in
 //        print("ListTodosViewController::titleForHeaderInSection(): Todos")
         return ("Todos")
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //TODO: properly populate data
 //        print("ListTodosViewController::numberOfRowsInSection(): \(self.todosFromDB.count)")
         return self.todosFromDB.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //TODO: properly populate data
 //        print("ListTodosViewController::cellForRowAt(): row \(indexPath.row)")
         if tableView == self.todosTable {
             let cell = tableView.dequeueReusableCell(withIdentifier: "TodoRow", for: indexPath) as! TodoRow

@@ -127,10 +127,7 @@ class AllListsViewController: UIViewController {
 // MARK: - Table view data source
 extension AllListsViewController: UITableViewDataSource
 {
-    //MARK: - UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
-//        print("AllListsViewController::numberOfSections(): 1")
-        //TODO: return proper number of sections DEPENDING on the tableView passed-in
         if tableView == self.smartListsTable {
             return 1
         } else { //tags table
@@ -139,8 +136,6 @@ extension AllListsViewController: UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        //TODO: return proper number of sections DEPENDING on the tableView passed-in
-
         if tableView == self.smartListsTable {
 //            print("AllListsViewController::titleForHeaderInSection(): Views")
             return "Smart Lists"
@@ -151,7 +146,6 @@ extension AllListsViewController: UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //TODO: properly populate data
         if tableView == self.smartListsTable {
 //            print("AllListsViewController::numberOfRowsInSection(): \(self.smartListsFromDB.count)")
             return self.smartListsFromDB.count
@@ -162,7 +156,6 @@ extension AllListsViewController: UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //TODO: properly populate data
 //        print("AllListsViewController::cellForRowAt(): start")
         if tableView == self.smartListsTable {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SmartListRow", for: indexPath) as! SmartListRow
