@@ -51,6 +51,9 @@ class AllListsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         self.listsFromDB = dbManager.getAllLists()
         self.smartListsFromDB = dbManager.getAllSmartLists()
+        for sm in self.smartListsFromDB {
+            print("AllLists::ViewWillAppear(): This Smart List has \(sm.lists!.count) lists")
+        }
         self.smartListsTable.reloadData()
         self.listsTable.reloadData()
     }
@@ -62,51 +65,29 @@ class AllListsViewController: UIViewController {
     
     //MARK: - Button Callbacks
     @IBAction func selectSmartList(_ sender: Any) {
-        //TODO: need to use the actual NAME of the smart list, not the table row!
         print("AllListsViewController::selectSmartList(): start")
-        let mySender = sender as! UIButton
-
-        if let cellRow = mySender.superview?.superview as? UITableViewCell {
-            let indexPath = self.smartListsTable.indexPath(for: cellRow)
-            print("AllListsViewController::selectSmartList(): indexPath = \(indexPath!.row)")
-            for smartList in self.smartListsFromDB {
-                if smartList.smartListID == indexPath!.row {
-                    self.listSelected = GenericList(smartList)
-                    print("found a matching smartlist!")
-                }
+        let selectButton = sender as! UIButton
+        for smartList in self.smartListsFromDB {
+            if smartList.smartListID == selectButton.tag {
+                print("SmartList list count = \(smartList.lists!.count)")
+                self.listSelected = GenericList(smartList)
             }
-
         }
-        
-        print("TEST IS HERE")
-        if let listRow = mySender.superview as? ListRow {
-            print(listRow)
-        } else if let listRow2 = mySender.superview?.superview as? ListRow {
-            print(listRow2)
-        }
-        print("TEST IS FINISHED")
-        
         performSegue(withIdentifier: "ShowListTodos", sender: nil)
         
     }
     
     @IBAction func selectList(_ sender: Any) {
         //TODO: need to use the actual NAME of the smart list, not the table row!
+                //TODO: bind listID to "tag" of details & select buttons when they are created!
         print("AllListsViewController::selectList(): start")
-        let mySender = sender as! UIButton
-        if let cellRow = mySender.superview?.superview as? UITableViewCell {
-            let indexPath = self.listsTable.indexPath(for: cellRow)
-            print("AllListsViewController::selectList(): indexPath = \(indexPath!.row)")
-            for list in self.listsFromDB {
-                if list.listID == indexPath!.row {
-                    self.listSelected = GenericList(list)
-                    print("found a matching smartlist!")
-                }
+        let selectButton = sender as! UIButton
+        for list in self.listsFromDB {
+            if list.listID == selectButton.tag {
+                self.listSelected = GenericList(list)
             }
-            
         }
         performSegue(withIdentifier: "ShowListTodos", sender: nil)
-        
     }
     
     // MARK: - Navigation/segues
@@ -116,23 +97,9 @@ class AllListsViewController: UIViewController {
         print("AllListsViewController::prepareForSegue(): segue is \(segue.identifier!)")
         if (segue.identifier == "ShowListTodos") {
             var todoList = segue.destination as! ListTodosViewController
-            todoList.list = self.listSelected
+            todoList.genericList = self.listSelected
         }
-//        if (segue.identifier ==  "ShowSmartListTodos" || segue.identifier == "ShowListTodos") {
-//            let todoList = segue.destination as! ListTodosViewController
-//        }
-//        todoList.list = GenericList(
-        //        let indexPath = tableView.indexPathForSelectedRow!
-        //        let section = indexPath.section
-        //        let row = indexPath.row
-        //
-        //        let vc = segue.destination as! SuperHeroDetailViewController
-        //        vc.imageName = images[section][row]
-        //        vc.heroName = superheroes[section][row]
-        //        vc.companyName = companies[section]
-        //        vc.powers = descriptions[section][row]
     }
-
 }
 
 // MARK: - Table view data source
@@ -171,10 +138,14 @@ extension AllListsViewController: UITableViewDataSource
         if tableView == self.smartListsTable {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SmartListRow", for: indexPath) as! SmartListRow
             cell.rowSmartListNameLabel.text = self.smartListsFromDB[indexPath.row].name!
+            cell.rowSmartListDetailButton.tag = Int(self.smartListsFromDB[indexPath.row].smartListID)
+            cell.rowSmartListSelectButton.tag = Int(self.smartListsFromDB[indexPath.row].smartListID)
             return cell
         } else { // lists table
             let cell = tableView.dequeueReusableCell(withIdentifier: "ListRow", for: indexPath) as! ListRow
             cell.rowListNameLabel.text = self.listsFromDB[indexPath.row].name!
+            cell.rowListDetailsButton.tag = Int(self.listsFromDB[indexPath.row].listID)
+            cell.rowListSelectButton.tag = Int(self.listsFromDB[indexPath.row].listID)
             return cell
         }
     }

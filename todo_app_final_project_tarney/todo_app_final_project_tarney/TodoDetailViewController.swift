@@ -19,6 +19,8 @@ class TodoDetailViewController: UIViewController {
     @IBOutlet weak var listComboBox3: UIPickerView!
     @IBOutlet weak var savedLabel: UILabel!
     
+    static let DEFAULT_COMBO_BOX_VALUE = "None"
+    
     var list1ChosenValue: List?
     var list2ChosenValue: List?
     var list3ChosenValue: List?
@@ -28,6 +30,8 @@ class TodoDetailViewController: UIViewController {
     var listsFromDB:[List] = []
     
     static var nextTodoIdNumber:Int64! = 0
+    
+    static let NONE = "None"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,22 +61,23 @@ class TodoDetailViewController: UIViewController {
         print("TodoDetailViewController::saveListDetails(): Todo name is \(self.todoNameText.text)")
 
         
-        var viewLists:[List] = []
+        var viewListSet: Set<List> = []
         if let chosenList1 = self.list1ChosenValue {
-            viewLists.append(chosenList1)
+            viewListSet.insert(chosenList1)
             print("TodoDetailViewController::saveTodo(): adding list \(chosenList1.name) to SmartList")
         }
         if let chosenList2 = self.list2ChosenValue {
-            viewLists.append(chosenList2)
+            viewListSet.insert(chosenList2)
             print("TodoDetailViewController::saveTodo(): adding list \(chosenList2.name) to SmartList")
         }
         if let chosenList3 = self.list3ChosenValue {
-            viewLists.append(chosenList3)
+            viewListSet.insert(chosenList3)
             print("TodoDetailViewController::saveTodo(): adding list \(chosenList3.name) to SmartList")
         }
-        print("There are \(viewLists.count) lists select for this todo")
+        print("There are \(viewListSet.count) lists select for this todo")
         
-        //TODO:update each list set for each todo
+        let viewLists = Array(viewListSet)
+        
         dbManager.insertTodo(
             name: self.todoNameText.text!,
             id: TodoDetailViewController.nextTodoIdNumber,
@@ -106,17 +111,28 @@ class TodoDetailViewController: UIViewController {
 
 extension TodoDetailViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return self.listsFromDB[row].name
+        //row - 1 to account for the default combo box value == row 0
+        if (row == 0) {
+            return TodoDetailViewController.DEFAULT_COMBO_BOX_VALUE
+        } else {
+            return self.listsFromDB[row-1].name
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        print("TodoDetailViewController::didSelectRow(): selected \(self.listsFromDB[row].name)")
-        if pickerView == self.listComboBox1 {
-            self.list1ChosenValue = self.listsFromDB[row]
-        } else if pickerView == self.listComboBox2 {
-            self.list2ChosenValue = self.listsFromDB[row]
-        } else {
-            self.list3ChosenValue = self.listsFromDB[row]
+        
+        if self.listsFromDB.count > 0 { // only do tihs if we have data
+            //Subtract 1 from the row to account for "DEFAULT_COMBO_BOX_VALUE" as the basic option for row 0
+            if row > 0 {
+                print("TodoDetailViewController::didSelectRow(): selected \(self.listsFromDB[row-1].name)")
+                if pickerView == self.listComboBox1 {
+                    self.list1ChosenValue = self.listsFromDB[row-1]
+                } else if pickerView == self.listComboBox2 {
+                    self.list2ChosenValue = self.listsFromDB[row-1]
+                } else {
+                    self.list3ChosenValue = self.listsFromDB[row-1]
+                }
+            }
         }
     }
 }
@@ -127,7 +143,8 @@ extension TodoDetailViewController: UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return self.listsFromDB.count
+        //add an extra spot for "DEFAULT_COMBO_BOX_VALUE"
+        return self.listsFromDB.count + 1
     }
     
 }

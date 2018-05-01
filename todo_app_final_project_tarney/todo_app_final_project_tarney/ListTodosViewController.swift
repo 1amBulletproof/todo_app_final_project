@@ -17,7 +17,7 @@ class TodoRow : UITableViewCell {
 class ListTodosViewController: UIViewController {
 
     //set via segue
-    var list: GenericList!
+    var genericList: GenericList!
     
     var todosFromDB:[Todo] = []
     
@@ -33,7 +33,7 @@ class ListTodosViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.todosFromDB = self.list.getTodos()
+        self.todosFromDB = self.genericList.getTodos()
         self.todosTable.reloadData()
     }
     

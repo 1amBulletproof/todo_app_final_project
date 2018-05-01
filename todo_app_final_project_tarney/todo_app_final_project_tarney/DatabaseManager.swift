@@ -35,8 +35,7 @@ extension DatabaseManager { //Write Methods
         
         listInsert.listID = id
         listInsert.name = name
-        let tmpTodos = NSSet(array: todos)
-        listInsert.todos = tmpTodos
+        listInsert.addToTodos(NSSet(array:todos))
 
         appDelegate.saveContext()
     }
@@ -49,10 +48,19 @@ extension DatabaseManager { //Write Methods
         
         smartListInsert.name = name
         smartListInsert.smartListID = id
-        let tmpLists = NSSet(array: lists)
-        smartListInsert.lists = tmpLists
+        smartListInsert.addToLists(NSSet(array: lists))
+        print("Databasemanager::insertSmartList(): smartList has \(smartListInsert.lists!.count) lists")
+ 
         
         appDelegate.saveContext()
+        
+        let tmpSmartList = self.getSmartList(id: id)
+        print("DatabaseManager::insertSmartList(): smartList has verified \(tmpSmartList!.lists!.count) lists")
+        
+        let smartLists = self.getAllSmartLists()
+        for sm in smartLists {
+                    print("DatabaseManager::insertSmartList(): smartList has verified \(sm.lists!.count) lists")
+        }
     }
     
     func insertTodo(name:String, id:Int64, lists:[List], details:String?, startDate:Date?, dueDate:Date?) {
@@ -66,6 +74,10 @@ extension DatabaseManager { //Write Methods
         todoInsert.details = details
         todoInsert.dueDate = dueDate
         todoInsert.startDate = startDate
+        
+        for list in lists {
+            list.addToTodos(todoInsert)
+        }
         
         appDelegate.saveContext()
     }
@@ -193,7 +205,8 @@ extension DatabaseManager { //Read methods
         let context = appDelegate.persistentContainer.viewContext
         let todoFetchRequest: NSFetchRequest<Todo> = Todo.fetchRequest()
         
-        let predicate = NSPredicate(format: "todoID == %@", id )
+        let idString = String(id)
+        let predicate = NSPredicate(format: "todoID == %@", idString )
         todoFetchRequest.predicate = predicate
         
         do {
@@ -241,7 +254,8 @@ extension DatabaseManager { //Read methods
         let context = appDelegate.persistentContainer.viewContext
         let listFetchRequest: NSFetchRequest<List> = List.fetchRequest()
         
-        let predicate = NSPredicate(format: "listID == %@", id )
+        let idString = String(id)
+        let predicate = NSPredicate(format: "listID == %@", idString )
         listFetchRequest.predicate = predicate
         
         do {
@@ -289,7 +303,8 @@ extension DatabaseManager { //Read methods
         let context = appDelegate.persistentContainer.viewContext
         let smartListFetchRequest: NSFetchRequest<SmartList> = SmartList.fetchRequest()
         
-        let predicate = NSPredicate(format: "smartListID == %@", id )
+        let idString = String(id)
+        let predicate = NSPredicate(format: "smartListID == %@", idString )
         smartListFetchRequest.predicate = predicate
         
         do {
@@ -414,32 +429,15 @@ extension DatabaseManager { //Read methods
     //MARK: - GET SOME Obj
     func getSmartListTodos(forSmartList: SmartList) -> [Todo] {
         //query for testing
+        print("HER HER HER HER")
         var todosInList:[Todo] = []
         for list in forSmartList.lists! {
+            print("LIST in SMARTLIST")
             let tmpList = list as! List
-            todosInList.append(contentsOf: self.getListTodos(forList: tmpList))
+            let tmpSetTodo: Set<Todo> = tmpList.todos! as! Set<Todo>
+            todosInList.append(contentsOf: Array(tmpSetTodo))
         }
         
-        return todosInList
-    }
-    
-    func getListTodos(forList list: List) -> [Todo] {
-        var todosInList:[Todo] = []
-        
-        let context = appDelegate.persistentContainer.viewContext
-        let todoFetchRequest: NSFetchRequest<Todo> = Todo.fetchRequest()
-        
-        let predicate = NSPredicate(format: "lists contains %@", list)
-        todoFetchRequest.predicate = predicate
-        
-        do {
-            let todos = try context.fetch(todoFetchRequest)
-            todosInList = todos
-            print("DatabaseManager::getListTodos(forList): found \(todos.count) todos")
-        } catch {
-            print("DatabaseManager::getListTodos(forList): error is \(error)")
-        }
-
         return todosInList
     }
     

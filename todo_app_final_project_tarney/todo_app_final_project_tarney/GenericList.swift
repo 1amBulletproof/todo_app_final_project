@@ -18,6 +18,7 @@ class GenericList {
     
     init(_ smartList: SmartList) {
         self.smartList = smartList
+        print("I have \(self.smartList!.lists) lists")
     }
     
     init(_ list: List) {
@@ -27,9 +28,12 @@ class GenericList {
     func getTodos() -> [Todo] {
         let databaseManager = DatabaseManager()
         if let smartList = self.smartList {
+            print("YOYOYOYOYOY")
+            print("I have \(smartList.lists!.count) lists")
             return databaseManager.getSmartListTodos(forSmartList: smartList)
         } else if let list = self.list {
-            return databaseManager.getListTodos(forList: list)
+            let tmpSetTodos = self.list!.todos!
+            return Array(tmpSetTodos) as! [Todo]
         } else {
             return []
         }
