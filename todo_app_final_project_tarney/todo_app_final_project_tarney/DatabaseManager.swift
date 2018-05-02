@@ -54,6 +54,7 @@ extension DatabaseManager { //Write Methods
         
         appDelegate.saveContext()
         
+        //Latest thing is cached = why this doesn't make sense
         let tmpSmartList = self.getSmartList(id: id)
         print("DatabaseManager::insertSmartList(): smartList has verified \(tmpSmartList!.lists!.count) lists")
         

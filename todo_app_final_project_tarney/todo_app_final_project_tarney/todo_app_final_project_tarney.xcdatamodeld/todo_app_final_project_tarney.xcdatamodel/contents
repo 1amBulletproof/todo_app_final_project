@@ -3,12 +3,13 @@
     <entity name="List" representedClassName="List" syncable="YES" codeGenerationType="class">
         <attribute name="listID" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
+        <relationship name="smartLists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SmartList" inverseName="lists" inverseEntity="SmartList" syncable="YES"/>
         <relationship name="todos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Todo" inverseName="lists" inverseEntity="Todo" syncable="YES"/>
     </entity>
     <entity name="SmartList" representedClassName="SmartList" syncable="YES" codeGenerationType="class">
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="smartListID" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="lists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="List" syncable="YES"/>
+        <relationship name="lists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="List" inverseName="smartLists" inverseEntity="List" syncable="YES"/>
     </entity>
     <entity name="Todo" representedClassName="Todo" syncable="YES" codeGenerationType="class">
         <attribute name="details" optional="YES" attributeType="String" syncable="YES"/>
@@ -20,8 +21,8 @@
     </entity>
     <fetchRequest name="AllTodos" entity="Todo" predicateString="name != &quot;\&quot;\&quot;&quot;"/>
     <elements>
-        <element name="List" positionX="-209" positionY="182" width="128" height="90"/>
-        <element name="SmartList" positionX="-227" positionY="-135" width="128" height="90"/>
-        <element name="Todo" positionX="-225" positionY="-9" width="128" height="135"/>
+        <element name="List" positionX="-209" positionY="182" width="128" height="103"/>
+        <element name="SmartList" positionX="-227" positionY="-135" width="128" height="88"/>
+        <element name="Todo" positionX="-585" positionY="18" width="128" height="135"/>
     </elements>
 </model>
