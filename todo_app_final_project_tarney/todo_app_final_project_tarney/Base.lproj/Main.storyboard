@@ -365,13 +365,16 @@
                                                     <rect key="frame" x="274" y="6" width="71" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" title="complete"/>
+                                                    <connections>
+                                                        <action selector="completeTodo:" destination="hK3-Lq-ESv" eventType="touchUpInside" id="PAe-b4-zd8"/>
+                                                    </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eRW-hU-09J">
                                                     <rect key="frame" x="147" y="6" width="71" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" title="details"/>
                                                     <connections>
-                                                        <segue destination="QTq-La-beQ" kind="show" identifier="showTodoDetails" id="jBw-AP-coN"/>
+                                                        <action selector="todoDetailsButtonSelected:" destination="hK3-Lq-ESv" eventType="touchUpInside" id="d7C-x4-ep1"/>
                                                     </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Todo Item" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9ZZ-g8-ur7">
@@ -405,6 +408,7 @@
                     </view>
                     <connections>
                         <outlet property="todosTable" destination="Zmh-al-77D" id="ihX-Qc-ZWK"/>
+                        <segue destination="QTq-La-beQ" kind="show" identifier="showTodoDetails" id="Hmb-AC-5OQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tQ5-5G-Ewz" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -772,7 +776,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="shu-wb-Bh9"/>
         <segue reference="4EX-96-ESF"/>
-        <segue reference="9KL-Qd-wus"/>
+        <segue reference="Hmb-AC-5OQ"/>
         <segue reference="8JW-uM-Toa"/>
     </inferredMetricsTieBreakers>
 </document>

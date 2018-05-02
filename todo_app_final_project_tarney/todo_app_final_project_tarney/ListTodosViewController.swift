@@ -19,6 +19,10 @@ class ListTodosViewController: UIViewController {
     //set via segue
     var genericList: GenericList!
     
+    var selectedTodo:Todo?
+    
+    let dbManager = DatabaseManager()
+    
     var todosFromDB:[Todo] = []
     
     @IBOutlet weak var todosTable: UITableView!
@@ -29,7 +33,6 @@ class ListTodosViewController: UIViewController {
         
         self.todosTable.delegate = self
         self.todosTable.dataSource = self
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -42,6 +45,37 @@ class ListTodosViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func todoDetailsButtonSelected(_ sender: Any) {
+        let todoDetailButton = sender as! UIButton
+        let todoID = todoDetailButton.tag
+        for todo in self.todosFromDB {
+            if todo.todoID == todoID {
+                self.selectedTodo = todo
+            }
+        }
+        performSegue(withIdentifier: "showTodoDetails", sender: nil)
+    }
+    
+    @IBAction func completeTodo(_ sender: Any) {
+        let completeTodoButton = sender as! UIButton
+        let todoID = completeTodoButton.tag
+        let rowNum = self.todosTable.indexPath(for: completeTodoButton.superview!.superview! as! UITableViewCell)
+        
+//        print("ListTodosViewController::completeTodo(): rowNum = \(rowNum)")
+        for todo in self.todosFromDB {
+            var counter = 0
+            if todo.todoID == todoID {
+                //Delete the todo from the db
+                self.dbManager.delete(todo: todo)
+                //Delete the todo in this UI cache
+                self.todosFromDB.remove(at: counter)
+
+                counter = counter + 1
+            }
+        }
+        //Remove the cell
+        self.todosTable.deleteRows(at: [rowNum!], with: .fade)
+    }
     // MARK: - Navigation/segues
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
@@ -83,6 +117,10 @@ extension ListTodosViewController: UITableViewDataSource
         if tableView == self.todosTable {
             let cell = tableView.dequeueReusableCell(withIdentifier: "TodoRow", for: indexPath) as! TodoRow
             cell.rowTodoNameLabel.text = self.todosFromDB[indexPath.row].name
+            cell.tag = indexPath.row
+            cell.rowTodoCompleteButton.tag = Int(self.todosFromDB[indexPath.row].todoID)
+            cell.rowTodoNameLabel.tag = Int(self.todosFromDB[indexPath.row].todoID)
+            cell.rowTodoDetailsButton.tag = Int(self.todosFromDB[indexPath.row].todoID)
             return cell
         } else { // tags table
             print("ListTodosViewController::cellForRowAt(): ERROR - not a todo row?!")
