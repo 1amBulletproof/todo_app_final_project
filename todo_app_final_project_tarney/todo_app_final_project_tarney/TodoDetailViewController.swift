@@ -29,6 +29,8 @@ class TodoDetailViewController: UIViewController {
     
     var listsFromDB:[List] = []
     
+    var todoToUpdate: Todo?
+    
     static var nextTodoIdNumber:Int64! = 0
     
     static let NONE = "None"
@@ -52,6 +54,44 @@ class TodoDetailViewController: UIViewController {
         self.listComboBox1.reloadAllComponents()
         self.listComboBox2.reloadAllComponents()
         self.listComboBox3.reloadAllComponents()
+
+        //IF we are UPDATING a TODO, SET the EXISTING VALUES
+        if let existingTodo = self.todoToUpdate {
+            print("TodoDetailViewController::viewWillAppear(): Existing TODO, populating details")
+            
+            //Set Todo Values
+            self.todoNameText.text = existingTodo.name
+            self.startDatePicker.date = existingTodo.startDate!
+            self.dueDatePicker.date = existingTodo.dueDate!
+            
+            //This gnarly code sets the ListComboBox Values based on the update todo existing lists
+            var listComboBoxCounter = 1
+            for list in existingTodo.lists! {
+//                print("list in existing TODO")
+                let existingList = list as! List
+                var listIndex = 1
+                for queriedList in self.listsFromDB {
+//                    print("list in queriedList")
+                    if existingList == queriedList {
+//                        print("existing list == queriedList @ index \(listIndex)")
+                        switch listComboBoxCounter {
+                        case 1:
+                            self.listComboBox1.selectRow(listIndex, inComponent: 0, animated: false)
+                        case 2:
+                            self.listComboBox2.selectRow(listIndex, inComponent: 0, animated: false)
+                        case 3:
+                            self.listComboBox3.selectRow(listIndex, inComponent: 0, animated: false)
+                        default:
+                            print("_ERROR_TodoDetailViewController::ViewWillAppear(): more than 3 lists attached to a TODO, should be impossible")
+                        }
+                        listComboBoxCounter = listComboBoxCounter + 1
+                    }
+                    listIndex = listIndex + 1
+                }
+            }
+
+            
+        }
         
         TodoDetailViewController.nextTodoIdNumber = self.dbManager.getMaxTodoId() + 1
     

@@ -81,6 +81,10 @@ class ListTodosViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
         print("ListTodosViewController::prepareForSegue(): segue is \(segue.identifier!)")
+        if segue.identifier! == "showTodoDetails" {
+            let todoDetails = segue.destination as! TodoDetailViewController
+            todoDetails.todoToUpdate = self.selectedTodo
+        }
         //        let indexPath = tableView.indexPathForSelectedRow!
         //        let section = indexPath.section
         //        let row = indexPath.row
@@ -104,7 +108,7 @@ extension ListTodosViewController: UITableViewDataSource
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 //        print("ListTodosViewController::titleForHeaderInSection(): Todos")
-        return ("Todos")
+        return self.genericList.getName()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

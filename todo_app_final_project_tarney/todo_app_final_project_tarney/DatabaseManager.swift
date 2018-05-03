@@ -55,13 +55,13 @@ extension DatabaseManager { //Write Methods
         appDelegate.saveContext()
         
         //Latest thing is cached = why this doesn't make sense
-        let tmpSmartList = self.getSmartList(id: id)
-        print("DatabaseManager::insertSmartList(): smartList has verified \(tmpSmartList!.lists!.count) lists")
-        
-        let smartLists = self.getAllSmartLists()
-        for sm in smartLists {
-                    print("DatabaseManager::insertSmartList(): smartList has verified \(sm.lists!.count) lists")
-        }
+//        let tmpSmartList = self.getSmartList(id: id)
+//        print("DatabaseManager::insertSmartList(): smartList has verified \(tmpSmartList!.lists!.count) lists")
+//        
+//        let smartLists = self.getAllSmartLists()
+//        for sm in smartLists {
+//                    print("DatabaseManager::insertSmartList(): smartList has verified \(sm.lists!.count) lists")
+//        }
     }
     
     func insertTodo(name:String, id:Int64, lists:[List], details:String?, startDate:Date?, dueDate:Date?) {

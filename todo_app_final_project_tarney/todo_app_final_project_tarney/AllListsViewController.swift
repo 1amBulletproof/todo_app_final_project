@@ -96,7 +96,7 @@ class AllListsViewController: UIViewController {
     {
         print("AllListsViewController::prepareForSegue(): segue is \(segue.identifier!)")
         if (segue.identifier == "ShowListTodos") {
-            var todoList = segue.destination as! ListTodosViewController
+            let todoList = segue.destination as! ListTodosViewController
             todoList.genericList = self.listSelected
         }
     }
