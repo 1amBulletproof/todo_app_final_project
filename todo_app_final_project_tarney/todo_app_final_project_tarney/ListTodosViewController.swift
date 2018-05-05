@@ -7,36 +7,35 @@
 //
 import UIKit
 
+//MARK: - Class TodoRow
 class TodoRow : UITableViewCell {
     @IBOutlet weak var rowTodoNameLabel: UILabel!
     @IBOutlet weak var rowTodoDetailsButton: UIButton!
     @IBOutlet weak var rowTodoCompleteButton: UIButton!
 }
 
-
+//MARK: - Class ListTodosViewController
 class ListTodosViewController: UIViewController {
-
-    //set via segue
+    //MARK: - Class Properties
     var genericList: GenericList!
-    
     var selectedTodo:Todo?
-    
+    //db stuff
     let dbManager = DatabaseManager()
-    
     var todosFromDB:[Todo] = []
-    
+    //UI Elements
     @IBOutlet weak var todosTable: UITableView!
     
+    //MARK: - Class Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("ListTodosViewController::viewDidLoad(): ViewsAndTags Controller INIT")
+//        print("ListTodosViewController::viewDidLoad(): ViewsAndTags Controller INIT")
         
         self.todosTable.delegate = self
         self.todosTable.dataSource = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.todosFromDB = self.genericList.getTodos()
+        self.todosFromDB = Array(self.genericList.getTodos())
         self.todosTable.reloadData()
     }
     
@@ -45,6 +44,7 @@ class ListTodosViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    //MARK: - Button Callback Methods
     @IBAction func todoDetailsButtonSelected(_ sender: Any) {
         let todoDetailButton = sender as! UIButton
         let todoID = todoDetailButton.tag
@@ -53,7 +53,7 @@ class ListTodosViewController: UIViewController {
                 self.selectedTodo = todo
             }
         }
-        performSegue(withIdentifier: "showTodoDetails", sender: nil)
+        performSegue(withIdentifier: "ShowTodoDetails", sender: nil)
     }
     
     @IBAction func completeTodo(_ sender: Any) {
@@ -76,29 +76,19 @@ class ListTodosViewController: UIViewController {
         //Remove the cell
         self.todosTable.deleteRows(at: [rowNum!], with: .fade)
     }
+    
     // MARK: - Navigation/segues
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
-        print("ListTodosViewController::prepareForSegue(): segue is \(segue.identifier!)")
-        if segue.identifier! == "showTodoDetails" {
+//        print("ListTodosViewController::prepareForSegue(): segue is \(segue.identifier!)")
+        if segue.identifier! == "ShowTodoDetails" {
             let todoDetails = segue.destination as! TodoDetailViewController
             todoDetails.todoToUpdate = self.selectedTodo
         }
-        //        let indexPath = tableView.indexPathForSelectedRow!
-        //        let section = indexPath.section
-        //        let row = indexPath.row
-        //
-        //        let vc = segue.destination as! SuperHeroDetailViewController
-        //        vc.imageName = images[section][row]
-        //        vc.heroName = superheroes[section][row]
-        //        vc.companyName = companies[section]
-        //        vc.powers = descriptions[section][row]
     }
-    
 }
 
-// MARK: - Table view data source
+// MARK: - Table DATA SOURCE
 extension ListTodosViewController: UITableViewDataSource
 {
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -133,12 +123,11 @@ extension ListTodosViewController: UITableViewDataSource
     }
 }
 
-extension ListTodosViewController: UITableViewDelegate
-{
-    //MARK: - UITableViewDelegate
+//MARK: - Table DELEGATE
+extension ListTodosViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 //        print("ListTodosViewController::heightForRowAt() 50")
-        return 50
+        return 100
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

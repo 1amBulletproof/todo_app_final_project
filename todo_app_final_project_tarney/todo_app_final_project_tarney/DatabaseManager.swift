@@ -11,24 +11,25 @@ import CoreData
 import UIKit
 
 class DatabaseManager {
-    
+    //MARK: - Class Properties
     var appDelegate:AppDelegate
     
+    //MARK: - Class Constructor
     init() {
         self.appDelegate = UIApplication.shared.delegate as! AppDelegate
-        print("DatabaseManager::init(): Initializing the DatabaseManager")
+//        print("DatabaseManager::init(): Initializing the DatabaseManager")
     }
 }
 
 //MARK: - Write Methods
-extension DatabaseManager { //Write Methods
+extension DatabaseManager {
     
     //**Reminder** cannot instantiate database classes like var list = List()
     //  thus instead of passing-in a List, pass-in the necessary variables
     
     //MARK: - Insert Methods
     func insertList(name:String, id:Int64, todos:[Todo]) {
-        print("DatabseManager::insertList(): start")
+//        print("DatabseManager::insertList(): start")
         
         let context = self.appDelegate.persistentContainer.viewContext
         let listInsert = NSEntityDescription.insertNewObject(forEntityName: "List", into: context) as! List
@@ -41,7 +42,7 @@ extension DatabaseManager { //Write Methods
     }
     
     func insertSmartList(name:String, id:Int64, lists:[List]) {
-        print("DatabseManager::insertSmartList(): start")
+//        print("DatabseManager::insertSmartList(): start")
         
         let context = self.appDelegate.persistentContainer.viewContext
         let smartListInsert = NSEntityDescription.insertNewObject(forEntityName: "SmartList", into: context) as! SmartList
@@ -49,23 +50,12 @@ extension DatabaseManager { //Write Methods
         smartListInsert.name = name
         smartListInsert.smartListID = id
         smartListInsert.addToLists(NSSet(array: lists))
-        print("Databasemanager::insertSmartList(): smartList has \(smartListInsert.lists!.count) lists")
- 
-        
+
         appDelegate.saveContext()
-        
-        //Latest thing is cached = why this doesn't make sense
-//        let tmpSmartList = self.getSmartList(id: id)
-//        print("DatabaseManager::insertSmartList(): smartList has verified \(tmpSmartList!.lists!.count) lists")
-//        
-//        let smartLists = self.getAllSmartLists()
-//        for sm in smartLists {
-//                    print("DatabaseManager::insertSmartList(): smartList has verified \(sm.lists!.count) lists")
-//        }
     }
     
     func insertTodo(name:String, id:Int64, lists:[List], details:String?, startDate:Date?, dueDate:Date?) {
-        print("DatabseManager::insertTodo(): start")
+//        print("DatabseManager::insertTodo(): start")
         
         let context = self.appDelegate.persistentContainer.viewContext
         let todoInsert = NSEntityDescription.insertNewObject(forEntityName: "Todo", into: context) as! Todo
@@ -85,7 +75,7 @@ extension DatabaseManager { //Write Methods
     
     //MARK: - update methods
     func update(todo: Todo) {
-        print("DatabseManager::update(Todo): start")
+//        print("DatabseManager::update(Todo): start")
         
         let context = self.appDelegate.persistentContainer.viewContext
         let todoInsert = self.getTodo(id: todo.todoID)
@@ -105,8 +95,8 @@ extension DatabaseManager { //Write Methods
                     details:String?,
                     startDate:Date?,
                     dueDate:Date?) {
-        print("DatabseManager::update(Todo): start")
-            
+//        print("DatabseManager::update(Todo): start")
+        
         let context = self.appDelegate.persistentContainer.viewContext
         let todoInsert = self.getTodo(id: id)
         if let todoToUpdate = todoInsert {
@@ -121,7 +111,7 @@ extension DatabaseManager { //Write Methods
     }
     
     func update(list: List) {
-        print("DatabseManager::update(Todo): start")
+//        print("DatabseManager::update(Todo): start")
         
         let context = self.appDelegate.persistentContainer.viewContext
         let listInsert = self.getList(id: list.listID)
@@ -134,7 +124,7 @@ extension DatabaseManager { //Write Methods
         }
     }
     func updateList(name:String, id:Int64, todos:[Todo]) {
-        print("DatabseManager::update(Todo): start")
+//        print("DatabseManager::update(Todo): start")
 
         let context = self.appDelegate.persistentContainer.viewContext
         let listInsert = self.getList(id: id)
@@ -149,7 +139,7 @@ extension DatabaseManager { //Write Methods
     }
     
     func update(smartList: SmartList) {
-        print("DatabseManager::updateSmartList(): start")
+//        print("DatabseManager::updateSmartList(): start")
         
         let context = self.appDelegate.persistentContainer.viewContext
         let smartListInsert = self.getSmartList(id: smartList.smartListID)
@@ -163,7 +153,7 @@ extension DatabaseManager { //Write Methods
         }
     }
     func updateSmartList(name:String, id:Int64, lists:[List]) {
-        print("DatabseManager::updateSmartList(): start")
+//        print("DatabseManager::updateSmartList(): start")
 
         let context = self.appDelegate.persistentContainer.viewContext
         let smartListInsert = self.getSmartList(id: id)
@@ -197,7 +187,7 @@ extension DatabaseManager { //Write Methods
 
 
 //MARK: - Read Methods
-extension DatabaseManager { //Read methods
+extension DatabaseManager {
     
     //MARK: - GET Single Obj
     func getTodo(id: Int64) -> Todo? {
@@ -369,7 +359,7 @@ extension DatabaseManager { //Read methods
         let listFetchRequest: NSFetchRequest<List> = List.fetchRequest()
         do {
             let lists = try context.fetch(listFetchRequest)
-            print("DatabaseManager::getAllLists(): found \(lists.count) lists\n")
+//            print("DatabaseManager::getAllLists(): found \(lists.count) lists\n")
             return lists
         } catch {
             print("DatabaseManager::getAllLists(): error is \(error)")
@@ -384,7 +374,7 @@ extension DatabaseManager { //Read methods
         do {
             let smartLists = try context.fetch(smartListFetchRequest)
             
-            print("DatabaseManager::getAllSmartLists(): found \(smartLists.count) SmartLists\n")
+//            print("DatabaseManager::getAllSmartLists(): found \(smartLists.count) SmartLists\n")
             return smartLists
         } catch {
             print("DatabaseManager::getAllSmartLists(): error is \(error)")
@@ -428,15 +418,13 @@ extension DatabaseManager { //Read methods
     }
     
     //MARK: - GET SOME Obj
-    func getSmartListTodos(forSmartList: SmartList) -> [Todo] {
+    func getSmartListTodos(forSmartList: SmartList) -> Set<Todo>{
         //query for testing
-        print("HER HER HER HER")
-        var todosInList:[Todo] = []
+        var todosInList:Set<Todo> = []
         for list in forSmartList.lists! {
-            print("LIST in SMARTLIST")
             let tmpList = list as! List
             let tmpSetTodo: Set<Todo> = tmpList.todos! as! Set<Todo>
-            todosInList.append(contentsOf: Array(tmpSetTodo))
+            todosInList = todosInList.union(tmpSetTodo)
         }
         
         return todosInList
@@ -453,7 +441,7 @@ extension DatabaseManager { //Read methods
         
         do {
             allTodos = try context.fetch(todosFetchRequest)
-            print("DatabaseManager::getListTodos(forExpression): found \(allTodos.count) todos")
+//            print("DatabaseManager::getListTodos(forExpression): found \(allTodos.count) todos")
         } catch {
             print("DatabaseManager::getListTodos(forExpression): error is \(error)")
         }

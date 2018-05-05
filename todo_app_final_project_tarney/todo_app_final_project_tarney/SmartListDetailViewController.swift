@@ -1,5 +1,5 @@
 //
-//  ViewDetailViewController.swift
+//  SmartListDetailViewController.swift
 //  todo_app_final_project_tarney
 //
 //  Created by Brandon Tarney on 4/18/18.
@@ -9,27 +9,27 @@
 import UIKit
 import CoreData
 
-class SmartListDetailViewController: UIViewController {
-
+class SmartListDetailViewController: UIViewController, UITextViewDelegate{
+    //MARK: - Class Properties
+    static let DEFAULT_COMBO_BOX_VALUE = "None"
+    //UI Elements
     @IBOutlet weak var smartListNameText: UITextView!
     @IBOutlet weak var listComboBox1: UIPickerView!
     @IBOutlet weak var listComboBox2: UIPickerView!
     @IBOutlet weak var listComboBox3: UIPickerView!
     @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var savedLabel: UILabel!
-    
-    static let DEFAULT_COMBO_BOX_VALUE = "None"
-    
+    //UI Element values
     var list1ChosenValue: List?
     var list2ChosenValue: List?
     var list3ChosenValue: List?
-
+    //Database values
     let dbManager = DatabaseManager()
-    
-    static var nextSmartListIdNumber:Int64! = 0
-    
     var listsFromDB:[List] = []
+    static var nextSmartListIdNumber:Int64! = 0
+    var smartListToUpdate: SmartList?
     
+    //MARK: - Class Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -39,13 +39,7 @@ class SmartListDetailViewController: UIViewController {
         self.listComboBox2.dataSource = self
         self.listComboBox3.delegate = self
         self.listComboBox3.dataSource = self
-        
-        //TODO: set the default value when view loads?
-
-//        print("RESETING SMART LIST NUMBER (BAD)")
-//        SmartListDetailViewController.nextSmartListIdNumber = 0
-        print(SmartListDetailViewController.nextSmartListIdNumber)
-        //TODO: get max ID number used to date
+        self.smartListNameText.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,70 +51,88 @@ class SmartListDetailViewController: UIViewController {
         self.listComboBox1.reloadAllComponents()
         self.listComboBox2.reloadAllComponents()
         self.listComboBox3.reloadAllComponents()
+        SmartListDetailViewController.nextSmartListIdNumber = dbManager.getMaxSmartListId() + 1
+        
+        //IF we are UPDATING a TODO, SET the EXISTING VALUES
+        if let existingSmartList = self.smartListToUpdate {
+//            print("SmarListDetailViewController::viewWillAppear(): Existing SmartList, populating details")
+            self.smartListNameText.text = existingSmartList.name
+            //This gnarly code sets the ListComboBox Values based on the update todo existing lists
+            var listComboBoxCounter = 1
+            for list in existingSmartList.lists! {
+                //                print("list in existing TODO")
+                let existingList = list as! List
+                var listIndex = 1
+                for queriedList in self.listsFromDB {
+                    //                    print("list in queriedList")
+                    if existingList == queriedList {
+                        //                        print("existing list == queriedList @ index \(listIndex)")
+                        switch listComboBoxCounter {
+                        case 1:
+                            self.listComboBox1.selectRow(listIndex, inComponent: 0, animated: false)
+                        case 2:
+                            self.listComboBox2.selectRow(listIndex, inComponent: 0, animated: false)
+                        case 3:
+                            self.listComboBox3.selectRow(listIndex, inComponent: 0, animated: false)
+                        default:
+                            print("_ERROR_SmartListDetailViewController::ViewWillAppear(): more than 3 lists attached to a TODO, should be impossible")
+                        }
+                        listComboBoxCounter = listComboBoxCounter + 1
+                    }
+                    listIndex = listIndex + 1
+                }
+            }
+        }
     }
     
     func setListsFromDB() {
         self.listsFromDB = dbManager.getAllLists()
-        SmartListDetailViewController.nextSmartListIdNumber = self.dbManager.getMaxSmartListId() + 1
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func didReceiveMemoryWarning() { super.didReceiveMemoryWarning() }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        self.savedLabel.isHidden = true
     }
     
     @IBAction func saveSmartListDetails(_ sender: Any) {
-        print("SmartListDetailViewController::saveSmartListDetails(): save Smart List details")
-        print("SmartListDetailViewController::saveSmartListDetails(): Smart List name is \(self.smartListNameText.text)")
+//        print("SmartListDetailViewController::saveSmartListDetails(): Smart List name is \(self.smartListNameText.text)")
         
         var viewListSet: Set<List> = []
         if let chosenList1 = self.list1ChosenValue {
             viewListSet.insert(chosenList1)
-            print("SmartListDetailViewController::saveSmartListDetails(): adding list \(chosenList1.name) to SmartList")
+//            print("SmartListDetailViewController::saveSmartListDetails(): adding list \(chosenList1.name) to SmartList")
         }
         if let chosenList2 = self.list2ChosenValue {
             viewListSet.insert(chosenList2)
-            print("SmartListDetailViewController::saveSmartListDetails(): adding list \(chosenList2.name) to SmartList")
+//            print("SmartListDetailViewController::saveSmartListDetails(): adding list \(chosenList2.name) to SmartList")
         }
         if let chosenList3 = self.list3ChosenValue {
             viewListSet.insert(chosenList3)
-            print("SmartListDetailViewController::saveSmartListDetails(): adding list \(chosenList3.name) to SmartList")
+//            print("SmartListDetailViewController::saveSmartListDetails(): adding list \(chosenList3.name) to SmartList")
         }
-        print("adding \(viewListSet.count) lists to this smart list")
+//        print("adding \(viewListSet.count) lists to this smart list")
 
         let viewLists = Array(viewListSet)
-        dbManager.insertSmartList(
-            name: self.smartListNameText.text!,
-            id: SmartListDetailViewController.nextSmartListIdNumber,
-            lists: viewLists)
-        
-        SmartListDetailViewController.nextSmartListIdNumber = SmartListDetailViewController.nextSmartListIdNumber + 1
-        self.savedLabel.isHidden = false
-//        Timer.init(timeInterval: 10, repeats: false, block: timer in {
-//            self.savedLabel.isHIdden = true
-//            })
-    }
-    
+        if let smartListToUpdate = self.smartListToUpdate {
+            smartListToUpdate.name = self.smartListNameText.text
+            smartListToUpdate.lists = viewListSet as NSSet
+            dbManager.update(smartList: smartListToUpdate)
+        } else {
+            dbManager.insertSmartList(
+                name: self.smartListNameText.text!,
+                id: SmartListDetailViewController.nextSmartListIdNumber,
+                lists: viewLists)
+            
+            SmartListDetailViewController.nextSmartListIdNumber = SmartListDetailViewController.nextSmartListIdNumber + 1
+        }
 
-    
-    // MARK: - Navigation/segues
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
-    {
-        print("SmartListDetailViewController::prepareForSegue(): segue is \(segue.identifier!)")
-        //        let indexPath = tableView.indexPathForSelectedRow!
-        //        let section = indexPath.section
-        //        let row = indexPath.row
-        //
-        //        let vc = segue.destination as! SuperHeroDetailViewController
-        //        vc.imageName = images[section][row]
-        //        vc.heroName = superheroes[section][row]
-        //        vc.companyName = companies[section]
-        //        vc.powers = descriptions[section][row]
+        self.savedLabel.isHidden = false
     }
 
 }
 
+//MARK: - Picker DELEGATE
 extension SmartListDetailViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         //row - 1 to account for the default combo box value == row 0
@@ -134,21 +146,32 @@ extension SmartListDetailViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if self.listsFromDB.count > 0 { //only do this if we have data
             //Subtract 1 from the row to account for "DEFAULT_COMBO_BOX_VALUE" as the basic option for row 0
-            if row > 0 {
-                print("SmartListDetailViewController::didSelectRow(): selected \(self.listsFromDB[row-1])")
-                if pickerView == self.listComboBox1 {
+//                print("SmartListDetailViewController::didSelectRow(): selected \(self.listsFromDB[row-1])")
+            if pickerView == self.listComboBox1 {
+                if row > 0 {
                     self.list1ChosenValue = self.listsFromDB[row-1]
-                } else if pickerView == self.listComboBox2 {
+                } else {
+                    self.list1ChosenValue = nil
+                }
+            } else if pickerView == self.listComboBox2 {
+                if row > 0 {
                     self.list2ChosenValue = self.listsFromDB[row-1]
                 } else {
+                    self.list2ChosenValue = nil
+                }
+            } else {
+                if row > 0 {
                     self.list3ChosenValue = self.listsFromDB[row-1]
+                } else {
+                    self.list3ChosenValue = nil
                 }
             }
-            
         }
+        self.savedLabel.isHidden = true
     }
 }
 
+//MARK: - Picker DATA SRC
 extension SmartListDetailViewController: UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1

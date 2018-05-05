@@ -9,49 +9,52 @@
 import UIKit
 import CoreData
 
-class ListDetailViewController: UIViewController {
-
+class ListDetailViewController: UIViewController, UITextViewDelegate {
+    //MARK: - Class Properties
+    //Db Stuff
+    let dbManager = DatabaseManager()
+    static var nextListIdNumber:Int64! = 0
+    var listToUpdate: List?
+    //UI Elements
     @IBOutlet weak var listNameText: UITextView!
     @IBOutlet weak var savedLabel: UILabel!
-    
-    let dbManager = DatabaseManager()
-    
-    static var nextListIdNumber:Int64! = 0
-    
+
+    //MARK: - Class Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.listNameText.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.savedLabel.isHidden = true
         ListDetailViewController.nextListIdNumber = self.dbManager.getMaxListId() + 1
+
+        if let listToUpdate = self.listToUpdate {
+            self.listNameText.text = listToUpdate.name
+        }
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        self.savedLabel.isHidden = true
     }
     
     @IBAction func saveListDetails(_ sender: Any) {
-        print("ListDetailViewController::saveListDetails(): List name is \(self.listNameText.text)")
+//        print("ListDetailViewController::saveListDetails(): List name is \(self.listNameText.text)")
         
-        dbManager.insertList(
-            name: self.listNameText.text!,
-            id: ListDetailViewController.nextListIdNumber,
-            todos: [])
-    
-        ListDetailViewController.nextListIdNumber = ListDetailViewController.nextListIdNumber + 1
+        if let listToUpdate = self.listToUpdate {
+            listToUpdate.name = self.listNameText.text
+            dbManager.update(list: listToUpdate)
+        } else {
+            dbManager.insertList(
+                name: self.listNameText.text!,
+                id: ListDetailViewController.nextListIdNumber,
+                todos: [])
+            
+            ListDetailViewController.nextListIdNumber = ListDetailViewController.nextListIdNumber + 1
+        }
+
         self.savedLabel.isHidden = false
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    override func didReceiveMemoryWarning() { super.didReceiveMemoryWarning() }
 }

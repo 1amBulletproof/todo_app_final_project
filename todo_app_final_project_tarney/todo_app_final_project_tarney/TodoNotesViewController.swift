@@ -8,30 +8,29 @@
 
 import UIKit
 
-class TodoNotesViewController: UIViewController {
-
+class TodoNotesViewController: UIViewController, UITextViewDelegate {
+    //MARK: - Class Properties
     @IBOutlet weak var todoNameText: UITextView!
     @IBOutlet weak var todoDetailsText: UITextView!
     
+    var todoDetailsView: TodoDetailViewController!
+    
+    //MARK: - Class Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        self.todoDetailsText.delegate = self
+        self.todoNameText.text = self.todoDetailsView.todoNameText.text
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    override func viewWillAppear(_ animated: Bool) {
+        self.todoNameText.text = self.todoDetailsView.todoNameText.text
+        self.todoDetailsText.text = self.todoDetailsView.todoDetailNotes
     }
-    */
+    
+    func textViewDidChange(_ textView: UITextView) {
+        self.todoDetailsView.todoDetailNotes = textView.text
+    }
 
+    override func didReceiveMemoryWarning() { super.didReceiveMemoryWarning() }
+    
 }

@@ -9,41 +9,43 @@
 import UIKit
 import CoreData
 
+//MARK: - Class SmartListRow
 class SmartListRow : UITableViewCell {
     @IBOutlet weak var rowSmartListNameLabel: UILabel!
     @IBOutlet weak var rowSmartListDetailButton: UIButton!
     @IBOutlet weak var rowSmartListSelectButton: UIButton!
 }
 
+//MARK: - Class ListRow
 class ListRow : UITableViewCell {
     @IBOutlet weak var rowListNameLabel: UILabel!
     @IBOutlet weak var rowListDetailsButton: UIButton!
     @IBOutlet weak var rowListSelectButton: UIButton!
 }
 
+//MARK: - Class AllListsViewController
 class AllListsViewController: UIViewController {
-
+    //MARK: - Class Properties
+    //UI Elements
     @IBOutlet weak var smartListsTable: UITableView!
     @IBOutlet weak var listsTable: UITableView!
-    
+    //DB elements
     let dbManager = DatabaseManager()
-    
-    var appDelegate:AppDelegate!
-    
     var smartListsFromDB: [SmartList] = []
     var listsFromDB:[List] = []
     var listSelected:GenericList!
+    var smartListDetailsSelected:SmartList?
+    var listDetailsSelected:List?
     
+    //MARK:  - Class Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("AllListsViewController::viewDidLoad(): Start")
+//        print("AllListsViewController::viewDidLoad(): Start")
         self.smartListsTable.delegate = self
         self.smartListsTable.dataSource = self
         self.listsTable.delegate = self
         self.listsTable.dataSource = self
         
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
@@ -52,35 +54,32 @@ class AllListsViewController: UIViewController {
         self.listsFromDB = dbManager.getAllLists()
         self.smartListsFromDB = dbManager.getAllSmartLists()
         for sm in self.smartListsFromDB {
-            print("AllLists::ViewWillAppear(): This Smart List has \(sm.lists!.count) lists")
+//            print("AllLists::ViewWillAppear(): This Smart List has \(sm.lists!.count) lists")
         }
         self.smartListsTable.reloadData()
         self.listsTable.reloadData()
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+    override func didReceiveMemoryWarning() { super.didReceiveMemoryWarning() }
     
     //MARK: - Button Callbacks
     @IBAction func selectSmartList(_ sender: Any) {
-        print("AllListsViewController::selectSmartList(): start")
+//        print("AllListsViewController::selectSmartList(): start")
         let selectButton = sender as! UIButton
         for smartList in self.smartListsFromDB {
             if smartList.smartListID == selectButton.tag {
-                print("SmartList list count = \(smartList.lists!.count)")
+//                print("SmartList list count = \(smartList.lists!.count)")
                 self.listSelected = GenericList(smartList)
             }
         }
         performSegue(withIdentifier: "ShowListTodos", sender: nil)
-        
     }
     
+    //MARK: - Button Callbacks
     @IBAction func selectList(_ sender: Any) {
         //TODO: need to use the actual NAME of the smart list, not the table row!
                 //TODO: bind listID to "tag" of details & select buttons when they are created!
-        print("AllListsViewController::selectList(): start")
+//        print("AllListsViewController::selectList(): start")
         let selectButton = sender as! UIButton
         for list in self.listsFromDB {
             if list.listID == selectButton.tag {
@@ -90,19 +89,56 @@ class AllListsViewController: UIViewController {
         performSegue(withIdentifier: "ShowListTodos", sender: nil)
     }
     
+    @IBAction func selectSmartListDetails(_ sender: Any) {
+        let smartListDetailButton = sender as! UIButton
+        let smartListDetailId = smartListDetailButton.tag
+        for smartList in self.smartListsFromDB {
+            if smartList.smartListID == smartListDetailId {
+                self.smartListDetailsSelected = smartList
+            }
+        }
+        performSegue(withIdentifier: "ShowSmartListDetails", sender: nil)
+    }
+    
+    @IBAction func selectListDetails(_ sender: Any) {
+        let listDetailButton = sender as! UIButton
+        let listDetailId = listDetailButton.tag
+        for list in self.listsFromDB {
+            if list.listID == listDetailId {
+                self.listDetailsSelected = list
+            }
+        }
+        performSegue(withIdentifier: "ShowListDetails", sender: nil)
+    }
+    
     // MARK: - Navigation/segues
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
-        print("AllListsViewController::prepareForSegue(): segue is \(segue.identifier!)")
-        if (segue.identifier == "ShowListTodos") {
+//        print("AllListsViewController::prepareForSegue(): segue is \(segue.identifier!)")
+        switch segue.identifier! {
+        case "ShowListTodos":
+//            print("segue is ShowListTodos")
             let todoList = segue.destination as! ListTodosViewController
             todoList.genericList = self.listSelected
+            break
+        case "ShowListDetails":
+//            print("segue is ShowListDetails")
+            let listDetailsView = segue.destination as! ListDetailViewController
+            listDetailsView.listToUpdate = self.listDetailsSelected
+            break
+        case "ShowSmartListDetails":
+//            print("segue is ShowSmartListDetails")
+            let smartListDetailsView = segue.destination as! SmartListDetailViewController
+            smartListDetailsView.smartListToUpdate = self.smartListDetailsSelected
+            break
+        default:
+//            print("AllListsViewController::prepareFor(segue): segue is \(segue.identifier!)")
+            break
         }
     }
 }
 
-// MARK: - Table view data source
+// MARK: - Table DATA SRC
 extension AllListsViewController: UITableViewDataSource
 {
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -151,7 +187,7 @@ extension AllListsViewController: UITableViewDataSource
     }
 }
 
-
+//MARK: - Table DELEGATE
 extension AllListsViewController: UITableViewDelegate
 {
     //MARK: - UITableViewDelegate
