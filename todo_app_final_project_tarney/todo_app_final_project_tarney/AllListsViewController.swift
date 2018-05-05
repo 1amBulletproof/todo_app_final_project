@@ -45,9 +45,6 @@ class AllListsViewController: UIViewController {
         self.smartListsTable.dataSource = self
         self.listsTable.delegate = self
         self.listsTable.dataSource = self
-        
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -109,6 +106,31 @@ class AllListsViewController: UIViewController {
             }
         }
         performSegue(withIdentifier: "ShowListDetails", sender: nil)
+    }
+    
+    //TODO: create a generic function to match SmartListID to SmartList?
+    func getSmartList(forIndexPath: IndexPath) -> SmartList? {
+        var returnSmartList: SmartList?
+        let smartListRow = self.smartListsTable.cellForRow(at: forIndexPath) as! SmartListRow
+        let smartListId = smartListRow.rowSmartListNameLabel.tag
+        for smartList in self.smartListsFromDB {
+            if smartList.smartListID == smartListId {
+                returnSmartList = smartList
+            }
+        }
+        return returnSmartList
+    }
+    
+    func getList(forIndexPath: IndexPath) -> List? {
+        var returnList: List?
+        let listRow = self.listsTable.cellForRow(at: forIndexPath) as! ListRow
+        let listId = listRow.rowListNameLabel.tag
+        for list in self.listsFromDB {
+            if list.listID == listId {
+                returnList = list
+            }
+        }
+        return returnList
     }
     
     // MARK: - Navigation/segues
@@ -199,6 +221,13 @@ extension AllListsViewController: UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
 //        print("AllListsViewController::didSelectRowAt(): start")
+        if tableView == self.smartListsTable {
+            print("selected smart list row \(indexPath.row)")
+        } else if tableView == self.listsTable {
+            print("select list row \(indexPath.row)")
+        } else {
+            print("_ERROR_AllListsViewController::didSelectRowAt(): What table is this?! \(tableView)")
+        }
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -206,31 +235,14 @@ extension AllListsViewController: UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        print("HERERERE")
         if editingStyle == .delete
         {
+            print("editingStyle")
             //TODO: remove the deleted object from your data source.
-            tableView.reloadData()
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+            tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
-    
-    
-    /*
-     // Override to support rearranging the table view.
-     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-     
-     }
-     */
-    
-    
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
 
 }
 
