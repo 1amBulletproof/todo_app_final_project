@@ -127,7 +127,7 @@ extension ListTodosViewController: UITableViewDataSource
 extension ListTodosViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 //        print("ListTodosViewController::heightForRowAt() 50")
-        return 100
+        return 75
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
