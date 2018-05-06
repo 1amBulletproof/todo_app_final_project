@@ -13,7 +13,7 @@ class TodoDetailViewController: UIViewController, UITextViewDelegate {
     //MARK: - Class Properties
     static let DEFAULT_COMBO_BOX_VALUE = "None"
     static let NONE = "None"
-    var appDelegate:AppDelegate
+    var appDelegate:AppDelegate!
     var hasNotifications = false
     
     //MARK: - Database Stuff
