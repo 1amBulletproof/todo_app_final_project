@@ -45,6 +45,8 @@ class AllListsViewController: UIViewController {
         self.smartListsTable.dataSource = self
         self.listsTable.delegate = self
         self.listsTable.dataSource = self
+        //allow editing the table
+        self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,7 +59,23 @@ class AllListsViewController: UIViewController {
         self.listsTable.reloadData()
     }
     
-    override func didReceiveMemoryWarning() { super.didReceiveMemoryWarning() }
+    //Enable editing of multiple tables embedded in UIViewController
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        let editStatus = navigationItem.rightBarButtonItem?.title
+        if editStatus == "Edit" {
+            self.smartListsTable.isEditing = true
+            self.listsTable.isEditing = true
+            navigationItem.rightBarButtonItem?.title = "Done"
+        } else {
+            self.smartListsTable.isEditing = false
+            self.listsTable.isEditing = false
+            navigationItem.rightBarButtonItem?.title = "Edit"
+        }
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
     
     //MARK: - Button Callbacks
     @IBAction func selectSmartList(_ sender: Any) {
@@ -72,10 +90,61 @@ class AllListsViewController: UIViewController {
         performSegue(withIdentifier: "ShowListTodos", sender: nil)
     }
     
+    //MARK: - GET LIST FCN's
+    func getSmartList(forIndexPath: IndexPath) -> SmartList? {
+        var returnSmartList: SmartList?
+        let smartListRow = self.smartListsTable.cellForRow(at: forIndexPath) as! SmartListRow
+        let smartListId = smartListRow.tag
+        //        print("row \(forIndexPath.row), smartListId \(smartListId)")
+        for smartList in self.smartListsFromDB {
+            //            print("SmartListId = \(smartList.smartListID)")
+            if smartList.smartListID == smartListId {
+                returnSmartList = smartList
+            }
+        }
+        return returnSmartList
+    }
+    
+    func getSmartListIndex(forSmartList: SmartList) -> Int? {
+        var indexOfSmartList: Int?
+        var index = 0
+        for smartList in self.smartListsFromDB {
+            if forSmartList == smartList {
+                indexOfSmartList = index
+            }
+            index = index + 1
+        }
+        return indexOfSmartList
+    }
+    
+    func getList(forIndexPath: IndexPath) -> List? {
+        var returnList: List?
+        let listRow = self.listsTable.cellForRow(at: forIndexPath) as! ListRow
+        let listId = listRow.tag
+        //        print("row \(forIndexPath.row), ListId \(listId)")
+        for list in self.listsFromDB {
+            //            print("listId = \(list.listID)")
+            if list.listID == listId {
+                returnList = list
+            }
+        }
+        return returnList
+    }
+    
+    func getListIndex(forList: List) -> Int? {
+        var indexOfList: Int?
+        var index = 0
+        for list in self.listsFromDB {
+            if forList == list {
+                indexOfList = index
+            }
+            index = index + 1
+        }
+        return indexOfList
+    }
+    
     //MARK: - Button Callbacks
     @IBAction func selectList(_ sender: Any) {
-        //TODO: need to use the actual NAME of the smart list, not the table row!
-                //TODO: bind listID to "tag" of details & select buttons when they are created!
 //        print("AllListsViewController::selectList(): start")
         let selectButton = sender as! UIButton
         for list in self.listsFromDB {
@@ -106,31 +175,6 @@ class AllListsViewController: UIViewController {
             }
         }
         performSegue(withIdentifier: "ShowListDetails", sender: nil)
-    }
-    
-    //TODO: create a generic function to match SmartListID to SmartList?
-    func getSmartList(forIndexPath: IndexPath) -> SmartList? {
-        var returnSmartList: SmartList?
-        let smartListRow = self.smartListsTable.cellForRow(at: forIndexPath) as! SmartListRow
-        let smartListId = smartListRow.rowSmartListNameLabel.tag
-        for smartList in self.smartListsFromDB {
-            if smartList.smartListID == smartListId {
-                returnSmartList = smartList
-            }
-        }
-        return returnSmartList
-    }
-    
-    func getList(forIndexPath: IndexPath) -> List? {
-        var returnList: List?
-        let listRow = self.listsTable.cellForRow(at: forIndexPath) as! ListRow
-        let listId = listRow.rowListNameLabel.tag
-        for list in self.listsFromDB {
-            if list.listID == listId {
-                returnList = list
-            }
-        }
-        return returnList
     }
     
     // MARK: - Navigation/segues
@@ -196,12 +240,14 @@ extension AllListsViewController: UITableViewDataSource
         if tableView == self.smartListsTable {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SmartListRow", for: indexPath) as! SmartListRow
             cell.rowSmartListNameLabel.text = self.smartListsFromDB[indexPath.row].name!
+            cell.tag = Int(self.smartListsFromDB[indexPath.row].smartListID)
             cell.rowSmartListDetailButton.tag = Int(self.smartListsFromDB[indexPath.row].smartListID)
             cell.rowSmartListSelectButton.tag = Int(self.smartListsFromDB[indexPath.row].smartListID)
             return cell
         } else { // lists table
             let cell = tableView.dequeueReusableCell(withIdentifier: "ListRow", for: indexPath) as! ListRow
             cell.rowListNameLabel.text = self.listsFromDB[indexPath.row].name!
+            cell.tag = Int(self.listsFromDB[indexPath.row].listID)
             cell.rowListDetailsButton.tag = Int(self.listsFromDB[indexPath.row].listID)
             cell.rowListSelectButton.tag = Int(self.listsFromDB[indexPath.row].listID)
             return cell
@@ -222,28 +268,73 @@ extension AllListsViewController: UITableViewDelegate
         tableView.deselectRow(at: indexPath, animated: false)
 //        print("AllListsViewController::didSelectRowAt(): start")
         if tableView == self.smartListsTable {
-            print("selected smart list row \(indexPath.row)")
+//            print("selected smart list row \(indexPath.row)")
+            let smartListOptional = self.getSmartList(forIndexPath: indexPath)
+            if let smartListFound = smartListOptional {
+                self.listSelected = GenericList(smartListFound)
+                performSegue(withIdentifier: "ShowListTodos", sender: nil)
+            }
         } else if tableView == self.listsTable {
-            print("select list row \(indexPath.row)")
+//            print("select list row \(indexPath.row)")
+            let listOptional = self.getList(forIndexPath: indexPath)
+            if let listFound = listOptional {
+                self.listSelected = GenericList(listFound)
+                performSegue(withIdentifier: "ShowListTodos", sender: nil)
+            }
         } else {
-            print("_ERROR_AllListsViewController::didSelectRowAt(): What table is this?! \(tableView)")
+            print("_ERROR_AllListsViewController::didSelectRowAt(): Unknown table \(tableView)")
         }
     }
     
+    //MARK: - DELETE functionality
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        print("HERERERE")
         if editingStyle == .delete
         {
-            print("editingStyle")
-            //TODO: remove the deleted object from your data source.
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        }
+            if tableView == self.smartListsTable {
+                let smartListToDeleteOptional = self.getSmartList(forIndexPath: indexPath)
+                if let smartListToDelete = smartListToDeleteOptional {
+                    let indexOfSmartListToDeleteOptional = self.getSmartListIndex(forSmartList: smartListToDelete)
+                    
+                    if let indexOfSmartListToDelete = indexOfSmartListToDeleteOptional {
+                        //Remove it from UI Table first
+                        self.smartListsTable.deleteRows(at: [indexPath], with: .fade)
+                        //Remove it from cache of smartLists next
+                        self.smartListsFromDB.remove(at: indexOfSmartListToDelete)
+                        //Remove it from the database last
+                        self.dbManager.delete(smartList: smartListToDelete)
+                    }
+                }
+                
+            } else if tableView == self.listsTable {
+                let listToDeleteOptional = self.getList(forIndexPath: indexPath)
+                if let listToDelete = listToDeleteOptional {
+                    let indexOfListToDeleteOptional = self.getListIndex(forList: listToDelete)
+                    
+                    if let indexOfListToDelete = indexOfListToDeleteOptional {
+                        //Remove it from UI Table first
+                        self.listsTable.deleteRows(at: [indexPath], with: .fade)
+                        //Remove it from cache of smartLists next
+                        self.listsFromDB.remove(at: indexOfListToDelete)
+                        //Remove it from the database last
+                        self.dbManager.delete(list: listToDelete)
+                    }
+                }
+            } else {
+                print("_ERROR_AllListsViewController::commitEdit(): Unknown table \(tableView)")
+            }
+        } //end DELETE functionality
     }
-
+    
+    //MARK: - REORDER functionality
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {}
+    
 }
 
 

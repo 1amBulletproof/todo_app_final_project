@@ -174,12 +174,12 @@ extension DatabaseManager {
         context.delete(todo)
     }
     
-    func delete(list: Todo) {
+    func delete(list: List) {
         let context = self.appDelegate.persistentContainer.viewContext
         context.delete(list)
     }
     
-    func delete(smartList: Todo) {
+    func delete(smartList: SmartList) {
         let context = self.appDelegate.persistentContainer.viewContext
         context.delete(smartList)
     }

@@ -32,6 +32,8 @@ class ListTodosViewController: UIViewController {
         
         self.todosTable.delegate = self
         self.todosTable.dataSource = self
+        //allow editing the table
+        self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -39,9 +41,47 @@ class ListTodosViewController: UIViewController {
         self.todosTable.reloadData()
     }
     
+    //Enable editing of multiple tables embedded in UIViewController
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        let editStatus = navigationItem.rightBarButtonItem?.title
+        if editStatus == "Edit" {
+            self.todosTable.isEditing = true
+            navigationItem.rightBarButtonItem?.title = "Done"
+        } else {
+            self.todosTable.isEditing = false
+            navigationItem.rightBarButtonItem?.title = "Edit"
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    }
+    
+    //MARK: - GET LIST FCN's
+    func getTodo(forIndexPath: IndexPath) -> Todo? {
+        var returnTodo: Todo?
+        let todoRow = self.todosTable.cellForRow(at: forIndexPath) as! TodoRow
+        let todoId = todoRow.tag
+        //        print("row \(forIndexPath.row), todoID \(todoId)")
+        for todo in self.todosFromDB {
+            //            print("TodoID = \(todo.todoID)")
+            if todo.todoID == todoId {
+                returnTodo = todo
+            }
+        }
+        return returnTodo
+    }
+    
+    func getTodoIndex(forTodo: Todo) -> Int? {
+        var indexOfTodo: Int?
+        var index = 0
+        for todo in self.todosFromDB {
+            if forTodo == todo {
+                indexOfTodo = index
+            }
+            index = index + 1
+        }
+        return indexOfTodo
     }
     
     //MARK: - Button Callback Methods
@@ -132,9 +172,16 @@ extension ListTodosViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
-//        print("ListTodosViewController::didSelectRowAt(): selected row \(indexPath.row)")
+        //        print("ListTodosViewController::didSelectRowAt(): selected row \(indexPath.row)")
+        let todoOptional = self.getTodo(forIndexPath: indexPath)
+        if let todoFound = todoOptional {
+            self.selectedTodo = todoFound
+            performSegue(withIdentifier: "ShowTodoDetails", sender: nil)
+        }
+
     }
     
+    //MARK: - DELETE functionality
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
@@ -142,26 +189,27 @@ extension ListTodosViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete
         {
-            //TODO: remove the deleted object from your data source.
-            tableView.reloadData()
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }
+            let todoToDeleteOptional = self.getTodo(forIndexPath: indexPath)
+            if let todoToDelete = todoToDeleteOptional {
+                let indexOftodoToDeleteOptional = self.getTodoIndex(forTodo: todoToDelete)
+                
+                if let indexOftodoToDelete = indexOftodoToDeleteOptional {
+                    //Remove it from UI Table first
+                    self.todosTable.deleteRows(at: [indexPath], with: .fade)
+                    //Remove it from cache of smartLists next
+                    self.todosFromDB.remove(at: indexOftodoToDelete)
+                    //Remove it from the database last
+                    self.dbManager.delete(todo: todoToDelete)
+                }
+            }
+
+        } //end DELETE functionality
     }
     
-    /*
-     // Override to support rearranging the table view.
-     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-     
-     }
-     */
-    
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
+    //MARK: - REORDER functionality
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {}
 }
 
