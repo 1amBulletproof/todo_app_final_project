@@ -418,10 +418,10 @@ extension DatabaseManager {
     }
     
     //MARK: - GET SOME Obj
-    func getSmartListTodos(forSmartList: SmartList) -> Set<Todo>{
+    func getAllTodosForListsIn(smartList: SmartList) -> Set<Todo>{
         //query for testing
         var todosInList:Set<Todo> = []
-        for list in forSmartList.lists! {
+        for list in smartList.lists! {
             let tmpList = list as! List
             let tmpSetTodo: Set<Todo> = tmpList.todos! as! Set<Todo>
             todosInList = todosInList.union(tmpSetTodo)

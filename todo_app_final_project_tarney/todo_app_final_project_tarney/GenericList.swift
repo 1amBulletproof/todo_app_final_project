@@ -31,7 +31,22 @@ class GenericList {
         let databaseManager = DatabaseManager()
         if let smartList = self.smartList {
 //            print("I have \(smartList.lists!.count) lists")
-            return databaseManager.getSmartListTodos(forSmartList: smartList)
+            //get ALL the possible TODOs
+            let allTodos = databaseManager.getAllTodosForListsIn(smartList: smartList)
+            //Filter out TODOS which are in ALL SmartList lists
+            var smartListTodos = Set<Todo>()
+            for todo in allTodos {
+                var addTodoToSmartListTodos = true
+                for list in smartList.lists! {
+                    if !(todo.lists!.contains(list)) {
+                        addTodoToSmartListTodos = false
+                    }
+                }
+                if addTodoToSmartListTodos {
+                    smartListTodos.insert(todo)
+                }
+            }
+            return smartListTodos
         } else if let list = self.list {
             let tmpSetTodos = self.list!.todos!
             return tmpSetTodos as! Set<Todo>
