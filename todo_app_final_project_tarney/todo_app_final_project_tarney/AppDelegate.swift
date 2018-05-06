@@ -17,7 +17,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
  
     let notificationCenter = UNUserNotificationCenter.current()
     
-
     var orientationLock = UIInterfaceOrientationMask.portrait
     
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
@@ -34,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     print("No notification permission")
                 }
         }
-        
+    
         return true
     }
     
