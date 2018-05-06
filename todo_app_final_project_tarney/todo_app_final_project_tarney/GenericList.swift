@@ -35,12 +35,16 @@ class GenericList {
             let allTodos = databaseManager.getAllTodosForListsIn(smartList: smartList)
             //Filter out TODOS which are in ALL SmartList lists
             var smartListTodos = Set<Todo>()
+            let now = Date()
             for todo in allTodos {
                 var addTodoToSmartListTodos = true
                 for list in smartList.lists! {
                     if !(todo.lists!.contains(list)) {
                         addTodoToSmartListTodos = false
                     }
+                }
+                if (todo.startDate! >= now) {
+                    addTodoToSmartListTodos = false
                 }
                 if addTodoToSmartListTodos {
                     smartListTodos.insert(todo)

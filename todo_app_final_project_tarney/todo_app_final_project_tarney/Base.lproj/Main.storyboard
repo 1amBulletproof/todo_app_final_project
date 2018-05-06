@@ -349,8 +349,8 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M8N-u7-S6e">
-                                <rect key="frame" x="9.5" y="483.5" width="356.5" height="133.5"/>
-                                <string key="text">Smart Lists will contain only todos which subscribe to ALL of the lists selected. For example, if you have a high-priority list and a homework list, a smart list which selects both of them will only show high-priority homework.  </string>
+                                <rect key="frame" x="9.5" y="450.5" width="356.5" height="166.5"/>
+                                <string key="text">Smart Lists will contain only todos which subscribe to ALL of the lists selected and have already "started". For example, if you have a high-priority list and a homework list, a smart list which selects both of them will only show high-priority homework which is past the start date.  </string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -396,7 +396,7 @@
                             <constraint firstItem="M8N-u7-S6e" firstAttribute="centerX" secondItem="raX-FR-4Wv" secondAttribute="centerX" id="WFX-ei-FHu"/>
                             <constraint firstItem="ILk-ss-rKJ" firstAttribute="centerY" secondItem="raX-FR-4Wv" secondAttribute="centerY" multiplier="0.8" id="WVN-I5-Qjg"/>
                             <constraint firstItem="TDI-HW-gxa" firstAttribute="leading" secondItem="raX-FR-4Wv" secondAttribute="leading" constant="15" id="YGd-py-gws"/>
-                            <constraint firstItem="M8N-u7-S6e" firstAttribute="height" secondItem="HoO-CL-XP5" secondAttribute="height" multiplier="0.2" id="dcc-VR-DHT"/>
+                            <constraint firstItem="M8N-u7-S6e" firstAttribute="height" secondItem="HoO-CL-XP5" secondAttribute="height" multiplier="0.25" id="dcc-VR-DHT"/>
                             <constraint firstItem="CH7-8B-jac" firstAttribute="leading" secondItem="raX-FR-4Wv" secondAttribute="leading" constant="15" id="dnQ-ap-7Hd"/>
                             <constraint firstItem="raX-FR-4Wv" firstAttribute="trailing" secondItem="TQH-L5-JeH" secondAttribute="trailing" constant="4" id="gCc-d0-HLd"/>
                             <constraint firstItem="raX-FR-4Wv" firstAttribute="bottom" secondItem="M8N-u7-S6e" secondAttribute="bottom" constant="50" id="k3m-ui-Ml3"/>
