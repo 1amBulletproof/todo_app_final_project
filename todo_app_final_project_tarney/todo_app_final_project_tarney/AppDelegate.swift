@@ -8,11 +8,14 @@
 
 import UIKit
 import CoreData
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    
+    let notificationCenter = UNUserNotificationCenter.current()
 
     var orientationLock = UIInterfaceOrientationMask.portrait
     
@@ -21,7 +24,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        let options: UNAuthorizationOptions = [.alert]
+        self.notificationCenter.requestAuthorization(options: options) {
+            (permission, error) in
+                if !permission {
+                    print("No notification permission")
+                }
+        }
         return true
     }
 

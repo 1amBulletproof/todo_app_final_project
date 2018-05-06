@@ -7,20 +7,22 @@
 //
 
 import UIKit
+import UserNotifications
 
 class TodoDetailViewController: UIViewController, UITextViewDelegate {
     //MARK: - Class Properties
     static let DEFAULT_COMBO_BOX_VALUE = "None"
     static let NONE = "None"
+    var appDelegate:AppDelegate
+    var hasNotifications = false
     
-    //DB Stuff
+    //MARK: - Database Stuff
     let dbManager = DatabaseManager()
     var listsFromDB:[List] = []
     static var nextTodoIdNumber:Int64! = 0
-    
     var todoToUpdate: Todo?
-
-    //UI Elements in this view
+    
+    //MARK: - UI Elements
     @IBOutlet weak var todoNameText: UITextView!
     @IBOutlet weak var startDatePicker: UIDatePicker!
     @IBOutlet weak var dueDatePicker: UIDatePicker!
@@ -29,7 +31,7 @@ class TodoDetailViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var listComboBox3: UIPickerView!
     @IBOutlet weak var savedLabel: UILabel!
     
-    //UI Element values
+    //MARK: - UI Element values
     var list1ChosenValue: List?
     var list2ChosenValue: List?
     var list3ChosenValue: List?
@@ -47,6 +49,8 @@ class TodoDetailViewController: UIViewController, UITextViewDelegate {
         self.listComboBox3.delegate = self
         self.listComboBox3.dataSource = self
         self.todoNameText.delegate = self
+        
+        self.appDelegate = UIApplication.shared.delegate as! AppDelegate
         
         //Add date picker callbacks
         self.startDatePicker.addTarget(self, action: #selector(TodoDetailViewController.datePickerValueChanged(sender:)), for: UIControlEvents.valueChanged)
@@ -97,6 +101,16 @@ class TodoDetailViewController: UIViewController, UITextViewDelegate {
                     }
                     listIndex = listIndex + 1
                 }
+            }// for list in existingTodo.lists
+        }//existing todo update code
+        
+        //Notifcations for this TODO?
+        self.appDelegate.notificationCenter.getNotificationSettings {
+            (notificationSettings) in
+            if notificationSettings.authorizationStatus == .authorized {
+                self.hasNotifications = true
+            } else {
+                self.hasNotifications = false
             }
         }
     }
@@ -154,9 +168,75 @@ class TodoDetailViewController: UIViewController, UITextViewDelegate {
 
         self.savedLabel.isHidden = false
         
+        self.setTodoNotifications(
+            todoName: self.todoNameText.text!,
+            todoStartDate: self.startDatePicker.date,
+            todoDueDate: self.dueDatePicker.date)
+        
     }
     
-    override func didReceiveMemoryWarning()  { super.didReceiveMemoryWarning() }
+    //MARK: - NOTIFICATIONS
+    func setTodoNotifications(todoName: String, todoStartDate: Date, todoDueDate: Date) {
+        //by default, register a start time
+        let startString = "\(todoName) START NOW"
+        let dueSoonString = "\(todoName) DUE SOON"
+        let dueSoonDetailsString = "\(todoName) due in 30 minutes"
+        let dueNowString = "\(todoName) DUE NOW"
+        
+        //Request START notification
+        let notificationContentStart = UNMutableNotificationContent()
+        notificationContentStart.title = startString
+        notificationContentStart.sound = UNNotificationSound.default()
+        let triggerDateStart = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: todoStartDate)
+        let notificationTriggerStart = UNCalendarNotificationTrigger(dateMatching: triggerDateStart, repeats: false)
+        let notificationIdentifierStart = "\(todoName)Start"
+        let notificationRequestStart = UNNotificationRequest(identifier: notificationIdentifierStart, content: notificationContentStart, trigger: notificationTriggerStart)
+        self.appDelegate.notificationCenter.add(notificationRequestStart, withCompletionHandler:
+            {
+                (error) in
+                    if let error = error {
+                        print("_ERROR_Could not add notification \(startString)")
+                        print(error)
+                    }
+            } )
+        
+        //Request DUE SOON notification
+        var timeInterval = DateComponents()
+        timeInterval.minute = -15
+        let dueSoonDate = Calendar.current.date(byAdding: timeInterval, to: todoDueDate)
+        let notificationContentSoon = UNMutableNotificationContent()
+        notificationContentSoon.title = dueSoonString
+        notificationContentSoon.sound = UNNotificationSound.default()
+        let triggerDateSoon = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: dueSoonDate!)
+        let notificationTriggerSoon = UNCalendarNotificationTrigger(dateMatching: triggerDateSoon, repeats: false)
+        let notificationIdentifierSoon = "\(todoName)Soon"
+        let notificationRequestSoon = UNNotificationRequest(identifier: notificationIdentifierSoon, content: notificationContentSoon, trigger: notificationTriggerSoon)
+        self.appDelegate.notificationCenter.add(notificationRequestSoon, withCompletionHandler:
+            {
+                (error) in
+                if let error = error {
+                    print("_ERROR_Could not add notification \(dueSoonString)")
+                    print(error)
+                }
+        } )
+        
+        //Request DUE NOW notification
+        let notificationContentNow = UNMutableNotificationContent()
+        notificationContentNow.title = dueNowString
+        notificationContentNow.sound = UNNotificationSound.default()
+        let triggerDateNow = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: todoDueDate)
+        let notificationTriggerNow = UNCalendarNotificationTrigger(dateMatching: triggerDateNow, repeats: false)
+        let notificationIdentifierNow = "\(todoName)Now"
+        let notificationRequestNow = UNNotificationRequest(identifier: notificationIdentifierNow, content: notificationContentNow, trigger: notificationTriggerNow)
+        self.appDelegate.notificationCenter.add(notificationRequestNow, withCompletionHandler:
+            {
+                (error) in
+                if let error = error {
+                    print("_ERROR_Could not add notification \(dueNowString)")
+                    print(error)
+                }
+        } )
+    }
     
     // MARK: - PREPARE FOR SEG
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -165,6 +245,9 @@ class TodoDetailViewController: UIViewController, UITextViewDelegate {
             todoDetailNotesView.todoDetailsView = self
         }
     }
+    
+    override func didReceiveMemoryWarning()  { super.didReceiveMemoryWarning() }
+    
 }
 
 //MARK: - UIPickerView DELEGATE
