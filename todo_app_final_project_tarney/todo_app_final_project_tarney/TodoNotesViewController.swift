@@ -24,7 +24,9 @@ class TodoNotesViewController: UIViewController, UITextViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         self.todoNameText.text = self.todoDetailsView.todoNameText.text
-        self.todoDetailsText.text = self.todoDetailsView.todoDetailNotes
+        if (self.todoDetailsView.todoDetailNotes != "") {
+            self.todoDetailsText.text = self.todoDetailsView.todoDetailNotes
+        }
     }
     
     func textViewDidChange(_ textView: UITextView) {
