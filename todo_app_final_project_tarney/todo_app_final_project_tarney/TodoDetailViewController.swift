@@ -68,6 +68,12 @@ class TodoDetailViewController: UIViewController, UITextViewDelegate {
         self.listComboBox3.reloadAllComponents()
         
         TodoDetailViewController.nextTodoIdNumber = self.dbManager.getMaxTodoId() + 1
+        
+        if (self.todoDetailNotes != self.tmpTodoDetailNotes &&
+            self.tmpTodoDetailNotes != "") {
+            //We have an update from the todo details notes page
+            self.todoDetailNotes = self.tmpTodoDetailNotes
+        } 
 
         //IF we are UPDATING a TODO, SET the EXISTING VALUES
         if let existingTodo = self.todoToUpdate {
