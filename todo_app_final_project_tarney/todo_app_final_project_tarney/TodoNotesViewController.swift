@@ -24,13 +24,13 @@ class TodoNotesViewController: UIViewController, UITextViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         self.todoNameText.text = self.todoDetailsView.todoNameText.text
-        if (self.todoDetailsView.todoDetailNotes != "") {
+        if (self.todoDetailsView.tmpTodoDetailNotes != "") {
             self.todoDetailsText.text = self.todoDetailsView.todoDetailNotes
         }
     }
     
     func textViewDidChange(_ textView: UITextView) {
-        self.todoDetailsView.todoDetailNotes = textView.text
+        self.todoDetailsView.tmpTodoDetailNotes = textView.text
     }
 
     override func didReceiveMemoryWarning() { super.didReceiveMemoryWarning() }

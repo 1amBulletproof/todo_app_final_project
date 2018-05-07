@@ -297,15 +297,16 @@ extension AllListsViewController: UITableViewDelegate
             if tableView == self.smartListsTable {
                 let smartListToDeleteOptional = self.getSmartList(forIndexPath: indexPath)
                 if let smartListToDelete = smartListToDeleteOptional {
+//                    print("Deleting \(smartListToDelete.name)")
                     let indexOfSmartListToDeleteOptional = self.getSmartListIndex(forSmartList: smartListToDelete)
                     
                     if let indexOfSmartListToDelete = indexOfSmartListToDeleteOptional {
-                        //Remove it from UI Table first
-                        self.smartListsTable.deleteRows(at: [indexPath], with: .fade)
-                        //Remove it from cache of smartLists next
+                        //Remove it from cache of smartLists first
                         self.smartListsFromDB.remove(at: indexOfSmartListToDelete)
-                        //Remove it from the database last
+                        //Remove it from the database second
                         self.dbManager.delete(smartList: smartListToDelete)
+                        //Remove it from UI Table last
+                        self.smartListsTable.deleteRows(at: [indexPath], with: .fade)
                     }
                 }
                 
@@ -315,12 +316,12 @@ extension AllListsViewController: UITableViewDelegate
                     let indexOfListToDeleteOptional = self.getListIndex(forList: listToDelete)
                     
                     if let indexOfListToDelete = indexOfListToDeleteOptional {
-                        //Remove it from UI Table first
-                        self.listsTable.deleteRows(at: [indexPath], with: .fade)
-                        //Remove it from cache of smartLists next
+                        //Remove it from cache of smartLists first
                         self.listsFromDB.remove(at: indexOfListToDelete)
-                        //Remove it from the database last
+                        //Remove it from the database next
                         self.dbManager.delete(list: listToDelete)
+                        //Remove it from UI Table last
+                        self.listsTable.deleteRows(at: [indexPath], with: .fade)
                     }
                 }
             } else {

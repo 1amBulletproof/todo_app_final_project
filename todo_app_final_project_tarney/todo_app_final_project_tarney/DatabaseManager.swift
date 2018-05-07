@@ -65,6 +65,7 @@ extension DatabaseManager {
         todoInsert.details = details
         todoInsert.dueDate = dueDate
         todoInsert.startDate = startDate
+        todoInsert.lists = NSSet(array: lists)
         
         for list in lists {
             list.addToTodos(todoInsert)
@@ -85,6 +86,12 @@ extension DatabaseManager {
             todoToUpdate.details = todo.details
             todoToUpdate.dueDate = todo.dueDate
             todoToUpdate.startDate = todo.startDate
+            todoToUpdate.lists = todo.lists
+            
+            for list in todo.lists! {
+                let aList = list as! List
+                aList.addToTodos(todoToUpdate)
+            }
             
             appDelegate.saveContext()
         }
@@ -105,7 +112,12 @@ extension DatabaseManager {
             todoToUpdate.details = details
             todoToUpdate.dueDate = dueDate
             todoToUpdate.startDate = startDate
+            todoToUpdate.lists = NSSet(array: lists)
             
+            for list in lists {
+                let aList = list as! List
+                aList.addToTodos(todoToUpdate)
+            }
             appDelegate.saveContext()
         }
     }
@@ -205,7 +217,7 @@ extension DatabaseManager {
             if todos.count > 0 {
                 todo = todos[0]
                 if todos.count > 1 {
-                    print("DatabaseManager::getList(id): found \(todos.count) Todos w/ id \(id)")
+//                    print("DatabaseManager::getList(id): found \(todos.count) Todos w/ id \(id)")
                 }
             }
         } catch {

@@ -1,5 +1,5 @@
 //
-//  ListsViewController
+//  ListTodosViewController
 //  todo_app_final_project_tarney
 //
 //  Created by Brandon Tarney on 4/15/18.
@@ -62,9 +62,9 @@ class ListTodosViewController: UIViewController {
         var returnTodo: Todo?
         let todoRow = self.todosTable.cellForRow(at: forIndexPath) as! TodoRow
         let todoId = todoRow.tag
-        //        print("row \(forIndexPath.row), todoID \(todoId)")
+//                print("row \(forIndexPath.row), todoID \(todoId)")
         for todo in self.todosFromDB {
-            //            print("TodoID = \(todo.todoID)")
+//                        print("TodoID = \(todo.todoID)")
             if todo.todoID == todoId {
                 returnTodo = todo
             }
@@ -151,7 +151,7 @@ extension ListTodosViewController: UITableViewDataSource
         if tableView == self.todosTable {
             let cell = tableView.dequeueReusableCell(withIdentifier: "TodoRow", for: indexPath) as! TodoRow
             cell.rowTodoNameLabel.text = self.todosFromDB[indexPath.row].name
-            cell.tag = indexPath.row
+            cell.tag = Int(self.todosFromDB[indexPath.row].todoID)
             cell.rowTodoCompleteButton.tag = Int(self.todosFromDB[indexPath.row].todoID)
             cell.rowTodoNameLabel.tag = Int(self.todosFromDB[indexPath.row].todoID)
             cell.rowTodoDetailsButton.tag = Int(self.todosFromDB[indexPath.row].todoID)
@@ -194,12 +194,12 @@ extension ListTodosViewController: UITableViewDelegate {
                 let indexOftodoToDeleteOptional = self.getTodoIndex(forTodo: todoToDelete)
                 
                 if let indexOftodoToDelete = indexOftodoToDeleteOptional {
-                    //Remove it from UI Table first
-                    self.todosTable.deleteRows(at: [indexPath], with: .fade)
-                    //Remove it from cache of smartLists next
+                    //Remove it from cache of smartLists first
                     self.todosFromDB.remove(at: indexOftodoToDelete)
-                    //Remove it from the database last
+                    //Remove it from the database next
                     self.dbManager.delete(todo: todoToDelete)
+                    //Remove it from UI Table last
+                    self.todosTable.deleteRows(at: [indexPath], with: .fade)
                 }
             }
 

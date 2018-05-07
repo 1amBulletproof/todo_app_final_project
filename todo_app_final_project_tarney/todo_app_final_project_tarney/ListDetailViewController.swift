@@ -1,5 +1,5 @@
 //
-//  TagDetailViewController.swift
+//  ListDetailViewController.swift
 //  todo_app_final_project_tarney
 //
 //  Created by Brandon Tarney on 4/18/18.

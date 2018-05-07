@@ -45,8 +45,6 @@ class SmartListDetailViewController: UIViewController, UITextViewDelegate{
     override func viewWillAppear(_ animated: Bool) {
         self.savedLabel.isHidden = true
         
-        //TODO: should this be on the background thread?
-        //TODO: does this need to go in the SEGUE code TO this view (so that it's prepopulated?!)
         self.setListsFromDB()
         self.listComboBox1.reloadAllComponents()
         self.listComboBox2.reloadAllComponents()

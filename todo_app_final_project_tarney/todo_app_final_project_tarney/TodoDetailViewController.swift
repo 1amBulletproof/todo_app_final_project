@@ -36,6 +36,8 @@ class TodoDetailViewController: UIViewController, UITextViewDelegate {
     var list2ChosenValue: List?
     var list3ChosenValue: List?
     var todoDetailNotes: String = ""
+    //Used to store updates from the Notes page which aren't immediately overwritten when viewWillAppear is called on return!
+    var tmpTodoDetailNotes: String = ""
 
     //MARK: - Class Methods
     override func viewDidLoad() {
@@ -76,6 +78,14 @@ class TodoDetailViewController: UIViewController, UITextViewDelegate {
             self.startDatePicker.date = existingTodo.startDate!
             self.dueDatePicker.date = existingTodo.dueDate!
             self.todoDetailNotes = existingTodo.details!
+            if (self.todoDetailNotes != self.tmpTodoDetailNotes &&
+                self.tmpTodoDetailNotes != "") {
+                //We have an update from the todo details notes page
+                self.todoDetailNotes = self.tmpTodoDetailNotes
+            } else {
+                //We just loaded this screen so let's set the existing details
+                self.tmpTodoDetailNotes = self.todoDetailNotes
+            }
             
             //This gnarly code sets the ListComboBox Values based on the update todo existing lists
             var listComboBoxCounter = 1
@@ -90,10 +100,13 @@ class TodoDetailViewController: UIViewController, UITextViewDelegate {
                         switch listComboBoxCounter {
                         case 1:
                             self.listComboBox1.selectRow(listIndex, inComponent: 0, animated: false)
+                            self.list1ChosenValue = queriedList
                         case 2:
                             self.listComboBox2.selectRow(listIndex, inComponent: 0, animated: false)
+                            self.list2ChosenValue = queriedList
                         case 3:
                             self.listComboBox3.selectRow(listIndex, inComponent: 0, animated: false)
+                            self.list3ChosenValue = queriedList
                         default:
                             print("_ERROR_TodoDetailViewController::ViewWillAppear(): more than 3 lists attached to a TODO, should be impossible")
                         }
@@ -152,6 +165,7 @@ class TodoDetailViewController: UIViewController, UITextViewDelegate {
             updateTodo.details = self.todoDetailNotes
             updateTodo.dueDate = self.dueDatePicker.date
             updateTodo.startDate = self.startDatePicker.date
+            updateTodo.lists = viewListSet as NSSet
             dbManager.update(todo: updateTodo)
         } else {
             //Inserting a new TODO
