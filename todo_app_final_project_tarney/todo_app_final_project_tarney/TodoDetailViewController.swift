@@ -73,7 +73,7 @@ class TodoDetailViewController: UIViewController, UITextViewDelegate {
             self.tmpTodoDetailNotes != "") {
             //We have an update from the todo details notes page
             self.todoDetailNotes = self.tmpTodoDetailNotes
-        } 
+        }
 
         //IF we are UPDATING a TODO, SET the EXISTING VALUES
         if let existingTodo = self.todoToUpdate {
